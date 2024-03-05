@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlRayan", "AlRayan.csproj", "{9F8E1569-3528-45BF-8456-B6C8D5B0B86E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F8E1569-3528-45BF-8456-B6C8D5B0B86E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F8E1569-3528-45BF-8456-B6C8D5B0B86E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F8E1569-3528-45BF-8456-B6C8D5B0B86E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F8E1569-3528-45BF-8456-B6C8D5B0B86E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18D2B89F-1ED3-42A2-A63A-D0A89C95EB41}
+	EndGlobalSection
+EndGlobal
