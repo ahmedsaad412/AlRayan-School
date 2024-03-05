@@ -57,7 +57,7 @@ namespace AlRayan
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
+           // app.Seed();
             app.Run();
         }
     }

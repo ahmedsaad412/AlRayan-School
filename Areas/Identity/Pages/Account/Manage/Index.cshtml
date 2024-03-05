@@ -1,4 +1,5 @@
 ﻿@page
+@using AlRayan.Settings
 @model IndexModel
 @{
     ViewData["Title"] = "Profile";
@@ -34,9 +35,9 @@
 
             <div class="form-group">
                    
-                    @if (Model.Input.ProfilePicture != null)
+                    @if (Model.Input.Photo != null)
                     {
-                        <img id="profilePicture" class="profile-picture" alt="profile" src="data:image/*;base64,@(Convert.ToBase64String(Model.Input.ProfilePicture))" />
+                        <img id="profilePicture" class="profile-picture"  alt="profile" src=@($"{FileSettings.FilePath}/student/{Model.Input.Photo}") />
                     }
                     else
                     {
@@ -55,9 +56,9 @@
                 <div class="mb-3">
                     <label for="fileInput" class="form-label"></label>
                     <input type="file" class="form-control" accept="image/*"
-                    asp-for="Input.ProfilePicture" id="fileInput"
+                    asp-for="Input.Photo" id="fileInput"
                            onchange="document.getElementById('profilePicture').src=window.URL.createObjectURL(this.files[0 ])">
-                    <span asp-validation-for="Input.ProfilePicture" class="text-danger"></span>
+                    <span asp-validation-for="Input.Photo" class="text-danger"></span>
 
                 </div>
 

@@ -6,6 +6,9 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using AlRayan.Attributes;
+using AlRayan.Settings;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,13 +19,18 @@ namespace AlRayan.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly string imagePath;
+        private readonly IWebHostEnvironment webHost;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager, IWebHostEnvironment _webHost)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            webHost = _webHost;
+            imagePath = $"{webHost.WebRootPath}{FileSettings.FilePath}";
+
         }
 
         /// <summary>
@@ -70,13 +78,15 @@ namespace AlRayan.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
 
             [Display(Name = "Profile Picture")]
-            public byte[] ProfilePicture { get; set; }
+            public string Photo { get; set; } = string.Empty;
+
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            //var photoName = await SavePhoto(Input.Photo);
 
             Username = userName;
 
@@ -85,7 +95,7 @@ namespace AlRayan.Areas.Identity.Pages.Account.Manage
                 FirstName=user.FirstName,
                 LastName=user.LastName,
                 PhoneNumber = phoneNumber
-                ,ProfilePicture=user.ProfilePicture
+               ,Photo= user.Photo
             };
         }
 
@@ -104,6 +114,7 @@ namespace AlRayan.Areas.Identity.Pages.Account.Manage
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
+            //var photoName = $"{Guid.NewGuid()}{Path.GetExtension()}";
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
@@ -148,20 +159,29 @@ namespace AlRayan.Areas.Identity.Pages.Account.Manage
             {
                 user.LastName = Input.LastName;
             }
-            if (Request.Form.Files.Count > 0)
-            {
-                var file =Request.Form.Files.FirstOrDefault();
-                ///check file size and path
-                using (var dataStream =new MemoryStream())
-                {
-                    await file.CopyToAsync(dataStream);
-                    user.ProfilePicture=dataStream.ToArray();
-                }
-                await _userManager.UpdateAsync(user);
-            }
+            //if (Request.Form.Files.Count > 0)
+            //{
+            //    var file =Request.Form.Files.FirstOrDefault();
+            //    ///check file size and path
+            //    using (var dataStream =new MemoryStream())
+            //    {
+            //        await file.CopyToAsync(dataStream);
+            //        user.ProfilePicture=dataStream.ToArray();
+            //    }
+            //    await _userManager.UpdateAsync(user);
+            //}
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
+        private async Task<string> SavePhoto(IFormFile photo)
+        {
+            var photoName = $"{Guid.NewGuid()}{Path.GetExtension(photo.FileName)}";
+            var path = Path.Combine(imagePath, photoName);
+            using var stream = System.IO.File.Create(path);
+            await photo.CopyToAsync(stream);
+            return photoName;
+        }
+
     }
 }

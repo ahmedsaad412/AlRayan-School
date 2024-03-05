@@ -3,6 +3,7 @@
 #nullable disable
 
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -11,7 +12,9 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using AlRayan.Attributes;
 using AlRayan.Models;
+using AlRayan.Settings;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -20,6 +23,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using NuGet.Packaging;
 
 namespace AlRayan.Areas.Identity.Pages.Account
 {
@@ -31,13 +35,15 @@ namespace AlRayan.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _webHost;
+        private readonly string _imagePath;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,IWebHostEnvironment webHost)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +51,8 @@ namespace AlRayan.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _webHost = webHost;
+            _imagePath = $"{_webHost.WebRootPath}{FileSettings.FilePath}";
         }
 
         /// <summary>
@@ -109,6 +117,10 @@ namespace AlRayan.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [AllowedExtentionsAttribute(FileSettings.AllowedExtentions)]
+            [MaxFileSizeAttribute(FileSettings.MaxFileSizeInBytes)]
+            public IFormFile Photo { get; set; }
         }
 
 
@@ -124,11 +136,13 @@ namespace AlRayan.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                
+                var photoName = await SavePhoto(Input.Photo);
+
                 var user = CreateUser();
                // user.UserName = new MailAddress(Input.Email).User;
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+                user.Photo = photoName;
                 await _userStore.SetUserNameAsync(user,new MailAddress( Input.Email).User, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
@@ -136,7 +150,8 @@ namespace AlRayan.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
+                    //assign student role 
+                    await _userManager.AddToRoleAsync(user, Consts.defaultRole);
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -190,6 +205,15 @@ namespace AlRayan.Areas.Identity.Pages.Account
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<ApplicationUser>)_userStore;
+        }
+
+        private async Task<string> SavePhoto(IFormFile photo)
+        {
+            var photoName = $"{Guid.NewGuid()}{Path.GetExtension(photo.FileName)}";
+            var path = Path.Combine(_imagePath, photoName);
+            using var stream =System.IO.File.Create(path);
+            await photo.CopyToAsync(stream);
+            return photoName;
         }
     }
 }

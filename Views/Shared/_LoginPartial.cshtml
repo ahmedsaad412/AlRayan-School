@@ -1,15 +1,19 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using AlRayan.Settings
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+
 <ul class="navbar-nav">
+    
 @if (SignInManager.IsSignedIn(User))
-{
-        @if (UserManager.GetUserAsync(User).Result.ProfilePicture != null)
+    {
+      
+        @if (UserManager.GetUserAsync(User).Result.Photo != null)
         {
-            <li class="nav">
-                <img class="avatar rounded-circle" alt="profile" src="data:image/*;base64,@(Convert.ToBase64String(Model.Input.ProfilePicture))" />
-            </li>
+            <li class="nav-item">
+                <img class="avatar rounded-circle" alt="profile" src=@($"{FileSettings.FilePath}/{UserManager.GetUserAsync(User).Result.Photo}" ) />
+            </li> 
         }
         <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>

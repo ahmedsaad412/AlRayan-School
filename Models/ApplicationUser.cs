@@ -13,7 +13,7 @@ namespace AlRayan.Models
 
         public string LastName { get; set; }
 
-        public byte[]? ProfilePicture { get; set; }
+        public string Photo { get; set; } = string.Empty;
 
         ///relation 1-1 for all users
         [ForeignKey(nameof(Center))]

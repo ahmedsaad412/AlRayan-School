@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System.Net.Mail;
 
 namespace AlRayan.Areas.Identity.Pages.Account
 {
@@ -108,7 +109,7 @@ namespace AlRayan.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            var userName = new EmailAddressAttribute().IsValid(Input.Email) ? _userManger.FindByEmailAsync(Input.Email).Result.UserName : Input.Email;
+            var userName = new EmailAddressAttribute().IsValid(Input.Email) ? new MailAddress(Input.Email).User : Input.Email;
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
