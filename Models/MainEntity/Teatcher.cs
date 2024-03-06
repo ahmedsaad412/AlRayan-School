@@ -9,6 +9,6 @@
         public Center Center { get; set; }
         //1-m user
         public required string UserId { get; set; }
-        public virtual required ApplicationUser User { get; set; }
+        public required ApplicationUser User { get; set; }
     }
 }

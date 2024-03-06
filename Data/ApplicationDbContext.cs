@@ -9,6 +9,10 @@ namespace AlRayan.Data
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Student_Course> Student_Courses{ get; set; }
+        public DbSet<Center> Centers{ get; set; }
+        public DbSet<Teatcher> Teatchers{ get; set; }
+        public DbSet<Student> Students{ get; set; }
+        public DbSet<Course> Courses{ get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
