@@ -8,7 +8,7 @@ using SQLitePCL;
 namespace AlRayan.Controllers 
 {
 
-  // [Authorize(Roles = "Admin")]
+   [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;

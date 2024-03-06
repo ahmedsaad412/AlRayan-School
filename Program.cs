@@ -14,8 +14,15 @@ namespace AlRayan
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("CS") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString),ServiceLifetime.Transient);
+                options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+
+            //builder.Services.AddScoped<IUserEmailStore<ApplicationUser>,IUserEmailStore<ApplicationUser>>();
+            //builder.Services.AddScoped<IUserStore<ApplicationUser>, IUserEmailStore<ApplicationUser>>();
+            //builder.Services.AddScoped<IWebHostEnvironment, IWebHostEnvironment>();
+
+
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

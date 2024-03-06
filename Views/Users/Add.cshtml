@@ -1,0 +1,66 @@
+﻿@model AddUserViewModel
+@{
+    ViewData["Title"] = "Add New User";
+}
+
+        <form  asp-action="Add" method="post" enctype="multipart/form-data">
+            <h2>Create a new User.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="FirstName" class="form-control" maxlength="100" aria-required="true" placeholder="enter first name" />
+                <label asp-for="FirstName">First Name</label>
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="LastName" class="form-control" maxlength="100" aria-required="true" placeholder="enter last name" />
+                <label asp-for="LastName">Last Name</label>
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Email" class="form-control" maxlength="100" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Email">Email</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="UserName" class="form-control" maxlength="100" aria-required="true" placeholder="enter last name" />
+                <label asp-for="UserName">Last Name</label>
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="Password">Password</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="ConfirmPassword">Confirm Password</label>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="file" asp-for="Photo" class="form-control"  aria-required="true"  />
+                <label asp-for="Photo"></label>
+                <small class="form-text text-muted">only .jpg ,.jepg .png files are allowed with max size 1MB</small><br />
+                <span asp-validation-for="Photo" class="text-danger"></span>
+            </div> <hr />
+            <h6>Roles</h6>
+                 @for (int i = 0; i < Model.Roles.Count; i++)
+                 {
+                     <div class="form-check m-1">
+                         <input type="hidden" asp-for="@Model.Roles[i].RoleName" />
+                         <input class="form-check-input" asp-for="@Model.Roles[i].IsSelected" />
+                         <lable class="form-check-lable" asp-for="@Model.Roles[i].IsSelected">
+                             @Model.Roles[i].RoleName
+                         </lable>
+                     </div>
+
+                 }
+                <span asp-validation-for="Roles" class="text-danger"></span>
+
+            <button  type="submit" class="w-100 btn btn-lg btn-primary d-block mt-4">Register</button>
+        </form>
+   
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

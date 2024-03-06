@@ -137,9 +137,7 @@ namespace AlRayan.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var photoName = await SavePhoto(Input.Photo);
-
                 var user = CreateUser();
-               // user.UserName = new MailAddress(Input.Email).User;
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.Photo = photoName;
