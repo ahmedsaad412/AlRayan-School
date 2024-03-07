@@ -3,6 +3,7 @@
     public class Teatcher
     {
         public int Id { get; set; }
+        public bool? IsMarried { get; set; }
         public int CourseId { get; set; }
         public Course Course { get; set; }
         public int CenterId { get; set; }

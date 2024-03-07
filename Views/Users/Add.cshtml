@@ -24,7 +24,7 @@
             </div>
             <div class="form-floating mb-3">
                 <input asp-for="UserName" class="form-control" maxlength="100" aria-required="true" placeholder="enter last name" />
-                <label asp-for="UserName">Last Name</label>
+                <label asp-for="UserName">User Name</label>
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
@@ -42,21 +42,9 @@
                 <label asp-for="Photo"></label>
                 <small class="form-text text-muted">only .jpg ,.jepg .png files are allowed with max size 1MB</small><br />
                 <span asp-validation-for="Photo" class="text-danger"></span>
-            </div> <hr />
-            <h6>Roles</h6>
-                 @for (int i = 0; i < Model.Roles.Count; i++)
-                 {
-                     <div class="form-check m-1">
-                         <input type="hidden" asp-for="@Model.Roles[i].RoleName" />
-                         <input class="form-check-input" asp-for="@Model.Roles[i].IsSelected" />
-                         <lable class="form-check-lable" asp-for="@Model.Roles[i].IsSelected">
-                             @Model.Roles[i].RoleName
-                         </lable>
-                     </div>
-
-                 }
-                <span asp-validation-for="Roles" class="text-danger"></span>
-
+            </div> 
+            <hr />
+  
             <button  type="submit" class="w-100 btn btn-lg btn-primary d-block mt-4">Register</button>
         </form>
    

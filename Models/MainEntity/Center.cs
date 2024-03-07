@@ -3,6 +3,7 @@
     public class Center
     {
         public int Id { get; set; }
+        public string CenterName { get; set; }
         public Center()
         {
             Teatchers = new HashSet<Teatcher>();

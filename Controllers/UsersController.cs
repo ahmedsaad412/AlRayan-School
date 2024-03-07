@@ -3,12 +3,9 @@ using AlRayan.Settings;
 using AlRayan.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.CodeDom;
 using System.Data;
-using System.Net.Mail;
 
 namespace AlRayan.Controllers
 {
@@ -18,12 +15,11 @@ namespace AlRayan.Controllers
         private readonly UserManager<ApplicationUser> _userManger;
         private readonly RoleManager<IdentityRole> _roleManger;
         private readonly ApplicationDbContext _db;
-        //private readonly iuserstore<applicationuser> _userstore;
-        //private readonly iuseremailstore<applicationuser> _emailstore;
+        
         private readonly IWebHostEnvironment _webHost;
         private readonly string _imagePath;
 
-        public UsersController(UserManager<ApplicationUser> user, RoleManager<IdentityRole> role, ApplicationDbContext db, /*IUserEmailStore<ApplicationUser> emailStore, IUserStore<ApplicationUser> userStore,*/ IWebHostEnvironment webHost)
+        public UsersController(UserManager<ApplicationUser> user, RoleManager<IdentityRole> role, ApplicationDbContext db, IWebHostEnvironment webHost)
         {
             _userManger = user;
             _roleManger = role;
@@ -34,7 +30,7 @@ namespace AlRayan.Controllers
             _imagePath = $"{_webHost.WebRootPath}{FileSettings.FilePath}";
         }
         public IActionResult Index()
-        {
+        { 
             var users = _db.Users.Select(user => new UserViewModel
             {
                 Id = user.Id,
@@ -52,30 +48,26 @@ namespace AlRayan.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Add(string userId)
+        public IActionResult Add()
         {
-            var roles = await _roleManger.Roles.Select(r=> new RoleViewModel
-            {
-                RoleId = r.Id,
-                RoleName = r.Name,
-            } ).ToListAsync();
-            var viewModel = new AddUserViewModel
-            {
-                Roles = roles
-            };
-            return View(viewModel);
+            //var roles = await _roleManger.Roles.Select(r=> new RoleViewModel
+            //{
+            //    RoleId = r.Id,
+            //    RoleName = r.Name,
+            //} ).ToListAsync();
+            //var viewModel = new AddUserViewModel
+            //{
+            //    Roles = roles
+            //};
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(AddUserViewModel model)
         {
-           if(ModelState.IsValid) 
+           if(!ModelState.IsValid) 
                 return View(model);
-            if(!model.Roles.Any(r=>r.IsSelected))
-            {
-                ModelState.AddModelError("Roles","Please select at least one role");
-                return View(model);
-            } 
+             
             if(await _userManger.FindByEmailAsync(model.Email)is not null )
             {
                 ModelState.AddModelError("Email","Email is already exists");
@@ -94,20 +86,19 @@ namespace AlRayan.Controllers
             user.Photo = photoName;
             user.Email = model.Email;
             user.UserName= model.UserName;
-           /* await _userStore.SetUserNameAsync(user, new MailAddress(model.Email).User, CancellationToken.None);
-            await _emailStore.SetEmailAsync(user, model.Email, CancellationToken.None);*/
+          
             var result = await _userManger.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError("Roles", error.Description);
+                    ModelState.AddModelError("Email", error.Description);
                 }
                 return View(model);
 
             }
-            await _userManger.AddToRolesAsync(user, model.Roles.Where(i => i.IsSelected).Select(r => r.RoleName));
+            await _userManger.AddToRoleAsync(user, "Teatcher");
             return RedirectToAction(nameof(Index));
 
         }

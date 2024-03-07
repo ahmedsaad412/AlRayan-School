@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Course>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2> 
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p> 
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.Hours)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.CenterId)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var emp in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(x => emp.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(x => emp.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(x => emp.Hours)
+            </td>
+            <td>
+                @Html.DisplayFor(x => emp.CenterId)
+            </td>
+            <td>
+                <i class="bi bi-0-circle"></i> @Html.ActionLink("Edit", "Edit", new { id = emp.Id }) |
+                @Html.ActionLink("Detail", "Detail", new { id = emp.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = emp.Id })
+            </td>
+        </tr>
+    }
+</table>  

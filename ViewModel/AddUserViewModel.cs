@@ -39,7 +39,7 @@ namespace AlRayan.ViewModel
         [AllowedExtentionsAttribute(FileSettings.AllowedExtentions)]
         [MaxFileSizeAttribute(FileSettings.MaxFileSizeInBytes)]
         public IFormFile Photo { get; set; }
-        public List<RoleViewModel> Roles{ get; set; }
+        //public List<RoleViewModel>? Roles{ get; set; }
 
     }
 }

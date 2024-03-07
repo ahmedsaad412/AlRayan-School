@@ -3,6 +3,7 @@
     public class Student
     {
         public int Id { get; set; }
+        
         public Student()
         {
             Courses = new HashSet<Student_Course>();
@@ -14,4 +15,5 @@
         public required string UserId { get; set; }
         public  required ApplicationUser User { get; set; }
     }
+
 }

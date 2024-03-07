@@ -37,7 +37,7 @@
                    
                     @if (Model.Input.Photo != null)
                     {
-                        <img id="profilePicture" class="profile-picture"  alt="profile" src=@($"{FileSettings.FilePath}/student/{Model.Input.Photo}") />
+                        <img id="profilePicture" class="profile-picture"  alt="profile" src=@($"{FileSettings.FilePath}{Model.Input.Photo}") />
                     }
                     else
                     {
