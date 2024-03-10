@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Net.Mail;
+using System.Collections;
 
 namespace AlRayan.Areas.Identity.Pages.Account
 {
@@ -107,9 +108,11 @@ namespace AlRayan.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-
+            
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             var userName = new EmailAddressAttribute().IsValid(Input.Email) ? new MailAddress(Input.Email).User : Input.Email;
+           
+
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -117,6 +120,39 @@ namespace AlRayan.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(userName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManger.FindByNameAsync(userName);
+                    var roles = await _userManger.GetRolesAsync(user);
+                    #region Routing url switch case
+                    //foreach (var role in roles)
+                    //{
+                    //    switch (role)
+                    //    {
+                    //        case "Student":
+                    //            returnUrl = "/Student";
+                    //            break;
+                    //        case "Teatcher":
+                    //            returnUrl = "/Teatcher";
+                    //            break;
+                    //        case "Admin":
+                    //            returnUrl = "/Admin";
+                    //            break;
+                    //    }
+                    //} 
+                    #endregion
+                    switch (roles)
+                    {
+                        case var _ when roles.Contains("Admin"):
+                            returnUrl = "/Admin";
+                            break;
+                        case var _ when roles.Contains("Teatcher"):
+                            returnUrl = "/Teatcher";
+                            break;
+                        case var _ when roles.Contains("Student"):
+                            returnUrl = "/Student";
+                            break;
+                        default:
+                            throw new System.ArgumentException("Some error message", nameof(roles));
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

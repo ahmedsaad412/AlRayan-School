@@ -1,0 +1,60 @@
+﻿
+@model IEnumerable<Teatcher>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(x => x.Id)
+        </th>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.Center.CenterName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(x => x.Course.Name)
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var std in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(x => std.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(x => std.User.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(x => std.User.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(x => std.User.Email)
+            </td>
+            <th>
+                @Html.DisplayFor(x => std.Center.CenterName)
+            </th>
+            <th>
+                @Html.DisplayFor(x => std.Course.Name)
+            </th>
+            <td>
+                <i class="bi bi-0-circle"></i> @Html.ActionLink("Edit", "Edit", new { id = std.Id }) |
+                @Html.ActionLink("Detail", "Detail", new { id = std.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = std.Id })
+            </td>
+        </tr>
+    }
+</table>

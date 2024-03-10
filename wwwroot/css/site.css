@@ -97,3 +97,8 @@ body {
     width:40px;
     object-fit:cover
 }
+
+.row {
+    align-items: center;
+    flex-direction: column;
+}

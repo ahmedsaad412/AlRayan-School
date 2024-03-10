@@ -15,7 +15,7 @@ namespace AlRayan.Controllers
         public IActionResult Index()
         
         {
-            var teatchersInCenter =_db.Teatchers.Include(c=>c.Center).Include(u=>u.User).ToList();
+            
             var courses =_db.Courses.Include(c=>c.Center)
                 .ThenInclude(t=>t.User)
                 
