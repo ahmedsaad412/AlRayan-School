@@ -1,0 +1,68 @@
+﻿@model AssignTeatcherForm
+
+@{
+    ViewData["Title"] = "New Teatcher";
+}
+
+
+
+<form asp-controller="Admin" method="post" >
+
+    <div class=" row">
+        <div class="col-md-6 ">
+            
+            <div class="form-group">
+                <label asp-for="UserId" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="UserId" asp-items="Model.Teatchers"
+                        data-placeholder="Select Teatcher" data-minimum-results-for-search="Infinity">
+                    <option></option>
+
+                </select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="CenterId" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="CenterId" asp-items="Model.Centers"
+                        data-placeholder="Select Center" data-minimum-results-for-search="Infinity">
+                    <option></option>
+
+                </select>
+                <span asp-validation-for="CenterId" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="CourseId" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="CourseId" asp-items="Model.Courses"
+                        data-placeholder="Select Course" data-minimum-results-for-search="Infinity">
+                    <option></option>
+
+                </select>
+                <span asp-validation-for="CourseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsMarried" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="IsMarried" 
+                        data-placeholder="Select Status" data-minimum-results-for-search="Infinity">
+                    <option>@Statues.True</option>
+                    <option>@Statues.False</option>
+                </select>
+                <span asp-validation-for="IsMarried" class="text-danger"></span>
+
+            </div>
+            
+            </div>
+            <button type="submit" class="btn btn-light text-black mt-4">Save</button>
+        </div>
+        <div class="col-md-6 d-flex justify-content-center pt-4 overflow-hidden">
+            <img class="photo-preview d-none" alt="Photo" />
+        </div>
+
+    </div>
+
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+
+}

@@ -13,6 +13,8 @@ namespace AlRayan.Models
 
         public string LastName { get; set; }
 
+        public Type Type { get; set; }
+        public bool IsDeleted { get; set; } = false;
         public string Photo { get; set; } = string.Empty;
 
         ///relation 1-1 for all users
@@ -27,5 +29,18 @@ namespace AlRayan.Models
         public int? TeatcherId { get; set; }
         public Teatcher Teatcher{ get; set; }
 
+    }
+
+    public enum Type
+    {
+        admin =1,
+        teatcher=2,
+        student=3
+    }  
+    public enum Statues
+    {
+        True =0,
+        False=1
+       
     }
 }

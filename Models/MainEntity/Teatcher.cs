@@ -4,12 +4,14 @@
     {
         public int Id { get; set; }
         public bool? IsMarried { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
         public int CourseId { get; set; }
         public Course Course { get; set; }
         public int CenterId { get; set; }
         public Center Center { get; set; }
         //1-m user
         public required string UserId { get; set; }
-        public required ApplicationUser User { get; set; }
+        public  ApplicationUser User { get; set; }
     }
 }

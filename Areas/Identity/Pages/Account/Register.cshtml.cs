@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using NuGet.Packaging;
+using AlRayan.Data;
 
 namespace AlRayan.Areas.Identity.Pages.Account
 {
@@ -37,13 +38,14 @@ namespace AlRayan.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _webHost;
         private readonly string _imagePath;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,IWebHostEnvironment webHost)
+            IEmailSender emailSender, IWebHostEnvironment webHost, ApplicationDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -53,6 +55,7 @@ namespace AlRayan.Areas.Identity.Pages.Account
             _emailSender = emailSender;
             _webHost = webHost;
             _imagePath = $"{_webHost.WebRootPath}{FileSettings.FilePath}";
+            _context = context;
         }
 
         /// <summary>
@@ -147,6 +150,7 @@ namespace AlRayan.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    _context.Students.Add(new Models.MainEntity.Student { UserId=user.Id});
                     _logger.LogInformation("User created a new account with password.");
                     //assign student role 
                     await _userManager.AddToRoleAsync(user, Consts.defaultRole);

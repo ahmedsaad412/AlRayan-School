@@ -31,6 +31,8 @@ namespace AlRayan.Controllers
         }
         public IActionResult Index()
         { 
+
+
             var users = _db.Users.Select(user => new UserViewModel
             {
                 Id = user.Id,

@@ -1,0 +1,73 @@
+﻿@model AssignCourseForm
+
+@{
+    ViewData["Title"] = "New Course";
+}
+
+
+
+<form asp-controller="Admin" method="post">
+
+    <div class=" row">
+        <div class="col-md-6 ">
+            <div>
+                <label asp-for="Name" class="form-label mt-4"></label>
+                <input type="text" class="form-control" asp-for="Name" placeholder="Enter Course Name">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Description" class="form-label mt-4"></label>
+                <input type="text" class="form-control" asp-for="Description" placeholder="Enter Description">
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div>
+                <label asp-for="Hours" class="form-label mt-4"></label>
+                <input type="text" class="form-control" asp-for="Hours" placeholder="Enter Hours">
+                <span asp-validation-for="Hours" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CenterId" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="CenterId" asp-items="Model.Centers"
+                        data-placeholder="Select Center" data-minimum-results-for-search="Infinity">
+                    <option></option>
+
+                </select>
+                <span asp-validation-for="CenterId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedTeatchers" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="SelectedTeatchers" asp-items="Model.Teatchers"
+                        data-placeholder="Select Teatcher" >
+                    <option></option>
+
+                </select>
+                <span asp-validation-for="SelectedTeatchers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SelectedStudents" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="SelectedStudents" asp-items="Model.Students"
+                        data-placeholder="Select Course" data-minimum-results-for-search="Infinity">
+                    <option></option>
+
+                </select>
+                <span asp-validation-for="SelectedStudents" class="text-danger"></span>
+            </div>
+
+        </div>
+        <button type="submit" class="btn btn-light text-black mt-4">Save</button>
+    </div>
+    <div class="col-md-6 d-flex justify-content-center pt-4 overflow-hidden">
+        <img class="photo-preview d-none" alt="Photo" />
+    </div>
+
+    </div>
+
+</form>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+
+}

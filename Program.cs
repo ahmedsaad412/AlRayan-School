@@ -1,5 +1,7 @@
 using AlRayan.Data;
 using AlRayan.Models;
+using AlRayan.Repository.Abstract;
+using AlRayan.Repository.Implementation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,12 +19,10 @@ namespace AlRayan
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-
-            //builder.Services.AddScoped<IUserEmailStore<ApplicationUser>,IUserEmailStore<ApplicationUser>>();
-            //builder.Services.AddScoped<IUserStore<ApplicationUser>, IUserEmailStore<ApplicationUser>>();
-            //builder.Services.AddScoped<IWebHostEnvironment, IWebHostEnvironment>();
-
-
+            builder.Services.AddScoped<ICenterService, CenterService>();
+            builder.Services.AddScoped<ICourseService, CourseService>();
+            builder.Services.AddScoped<ITeatcherService,TeatcherService>();
+            builder.Services.AddScoped<IStudentService,StudentService>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

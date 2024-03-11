@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
         public string CenterName { get; set; }
+        public bool IsDeleted { get; set; }=false;
+
         public Center()
         {
             Teatchers = new HashSet<Teatcher>();
@@ -15,6 +17,6 @@
         //1-m user
 
         public required string UserId { get; set; }
-        public  required ApplicationUser User { get; set; }
+        public   ApplicationUser User { get; set; }
     }
 }

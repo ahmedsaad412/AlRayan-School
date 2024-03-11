@@ -3,7 +3,8 @@
     public class Student
     {
         public int Id { get; set; }
-        
+        public bool IsDeleted { get; set; }=false;
+
         public Student()
         {
             Courses = new HashSet<Student_Course>();
@@ -13,7 +14,7 @@
 
         //1-m user.
         public required string UserId { get; set; }
-        public  required ApplicationUser User { get; set; }
+        public   ApplicationUser User { get; set; }
     }
 
 }

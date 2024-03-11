@@ -45,7 +45,7 @@
                     
                     }
 
-                @* <div class=" form-control mt-2">
+                 @* <div class=" form-control mt-2">
                          <input type="file"
                              accept="image/*"
                              asp-for="Input.ProfilePicture"
@@ -53,14 +53,14 @@
 
                     <label class="custom-file-lable" asp-for="Input.ProfilePicture"> Choose picture</label>
                      </div> *@
-                <div class="mb-3">
+                @* <div class="mb-3">
                     <label for="fileInput" class="form-label"></label>
                     <input type="file" class="form-control" accept="image/*"
                     asp-for="Input.Photo" id="fileInput"
                            onchange="document.getElementById('profilePicture').src=window.URL.createObjectURL(this.files[0 ])">
                     <span asp-validation-for="Input.Photo" class="text-danger"></span>
 
-                </div>
+                </div> *@
 
                 </div>
         </div>

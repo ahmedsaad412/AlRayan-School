@@ -6,6 +6,8 @@
         public  string  Name { get; set; }
         public string Description { get; set; }
         public int Hours { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
         public Course()
         {
             Teatchers = new HashSet<Teatcher>();
@@ -15,7 +17,7 @@
         public int CenterId { get; set; }
         public Center Center { get; set; }
 
-        ICollection<Teatcher> Teatchers { get; set; }
-        ICollection<Student_Course> Students { get; set; }
+        public ICollection<Teatcher> Teatchers { get; set; }
+        public ICollection<Student_Course> Students { get; set; }
     }
 }
