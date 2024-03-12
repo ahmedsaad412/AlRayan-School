@@ -75,9 +75,9 @@ namespace AlRayan.Controllers
             {
                 Centers = _center.GetSelectList(),
 
-                Students= _student.GetSelectList(),
+                //Students= _student.GetSelectList(),
 
-                Teatchers = _teatcher.GetSelectList(),
+                //Teatchers = _teatcher.GetSelectList(),
 
             };
             return View(viewModel);
@@ -91,9 +91,9 @@ namespace AlRayan.Controllers
             {
                 model.Centers = _center.GetSelectList();
 
-                model.Students = _student.GetSelectList();
+                //model.Students = _student.GetSelectList();
 
-                model.Teatchers = _teatcher.GetSelectList();
+                //model.Teatchers = _teatcher.GetSelectList();
 
                 return View(model);
             }

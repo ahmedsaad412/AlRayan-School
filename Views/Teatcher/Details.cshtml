@@ -1,0 +1,18 @@
+﻿
+@model Teatcher
+
+<div class="card">
+    <div class="card-header">
+        @($"{@Model.User.FirstName} {Model.User.LastName}")
+    </div>
+    <div class="card-body">
+        <img class="card-img-top" alt="student image cap" src="@($"{FileSettings.FilePath}{Model.User.Photo}")">
+
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+    <div class="card-footer">
+        <p>Center : <small>@Model.Center.CenterName</small></p>
+        <p>Course : <small>@Model.Course.Name</small></p>
+        <p>Married : <small>@Model.IsMarried</small></p>
+    </div>
+</div>

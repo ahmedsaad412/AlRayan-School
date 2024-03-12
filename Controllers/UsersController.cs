@@ -24,8 +24,6 @@ namespace AlRayan.Controllers
             _userManger = user;
             _roleManger = role;
             _db = db;
-            //_emailStore = emailStore;
-            //_userStore = userStore;
             _webHost = webHost;
             _imagePath = $"{_webHost.WebRootPath}{FileSettings.FilePath}";
         }
@@ -52,15 +50,7 @@ namespace AlRayan.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            //var roles = await _roleManger.Roles.Select(r=> new RoleViewModel
-            //{
-            //    RoleId = r.Id,
-            //    RoleName = r.Name,
-            //} ).ToListAsync();
-            //var viewModel = new AddUserViewModel
-            //{
-            //    Roles = roles
-            //};
+            
             return View();
         }
         [HttpPost]
@@ -101,6 +91,7 @@ namespace AlRayan.Controllers
 
             }
             await _userManger.AddToRoleAsync(user, "Teatcher");
+            //_db.Teatchers.Add(new Models.MainEntity.Teatcher { UserId=user.Id });
             return RedirectToAction(nameof(Index));
 
         }

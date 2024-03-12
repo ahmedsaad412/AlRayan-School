@@ -1,12 +1,12 @@
-﻿@model AssignCourseForm
+﻿@model EditCourseForm
 
 @{
-    ViewData["Title"] = "New Course";
+    ViewData["Title"] = "Edit Course";
 }
 
 
 
-<form asp-controller="Admin" method="post">
+<form asp-controller="Course" method="post">
 
     <div class=" row">
         <div class="col-md-6 ">
@@ -35,34 +35,15 @@
                 </select>
                 <span asp-validation-for="CenterId" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-                <label asp-for="SelectedTeatchers" class="form-label mt-4"></label>
-                <select class="form-select" asp-for="SelectedTeatchers" asp-items="Model.Teatchers"
-                        data-placeholder="Select Teatcher" >
-                    <option></option>
-
-                </select>
-                <span asp-validation-for="SelectedTeatchers" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SelectedStudents" class="form-label mt-4"></label>
-                <select class="form-select" asp-for="SelectedStudents" asp-items="Model.Students"
-                        data-placeholder="Select Course" data-minimum-results-for-search="Infinity">
-                    <option></option>
-
-                </select>
-                <span asp-validation-for="SelectedStudents" class="text-danger"></span>
-            </div> *@
+            <small>Number of student :@Model.studentNumber</small>
+            <small>Number of teatcher :@Model.teatcherNumber</small>
 
         </div>
         <button type="submit" class="btn btn-light text-black mt-4">Save</button>
     </div>
-    <div class="col-md-6 d-flex justify-content-center pt-4 overflow-hidden">
-        <img class="photo-preview d-none" alt="Photo" />
-    </div>
-
-    </div>
-
+ 
+    
+   
 </form>
 
 

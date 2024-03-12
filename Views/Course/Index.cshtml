@@ -1,49 +1,57 @@
-﻿@model IEnumerable<Course>
-
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h2>Index</h2> 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p> 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(x => x.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(x => x.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(x => x.Hours)
-        </th>
-        <th>
-            @Html.DisplayNameFor(x => x.CenterId)
-        </th>
-        <th></th>
-    </tr>
-    @foreach (var emp in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(x => emp.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(x => emp.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(x => emp.Hours)
-            </td>
-            <td>
-                @Html.DisplayFor(x => emp.CenterId)
-            </td>
-            <td>
-                <i class="bi bi-0-circle"></i> @Html.ActionLink("Edit", "Edit", new { id = emp.Id }) |
-                @Html.ActionLink("Detail", "Detail", new { id = emp.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = emp.Id })
-            </td>
-        </tr>
-    }
-</table>  
+﻿
+@model IEnumerable<Course>
+<body class="bg-light">
+    <a asp-controller="Admin" asp-action="AssignCourse" class="btn btn-primary"> Add New Course</a>
+    <!-- Main body -->
+    <div class="container">
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table table-fit mt-5 table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Hours</th>
+                        <th scope="col">Center</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var Course in Model)
+                    {
+                        <tr>
+                            
+                            <td></td>
+                            <td>
+                                @Html.DisplayFor(x => Course.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => Course.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => Course.Hours)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => Course.Center.CenterName)
+                            </td>
+                            <td >
+                                <a asp-action="Details" type="button" class="btn" asp-route-id="@Course.Id">
+                                    <i class="material-icons text-primary">Details</i>
+                                </a>
+                                <a asp-action="Edit" type="button" class="btn" asp-route-id="@Course.Id">
+                                    <i class="material-icons text-warning">Edit</i>
+                                </a>
+                                <a asp-action="SoftDelete" type="button" class="btn" asp-route-id="@Course.Id">
+                                    <i class="material-icons text-danger">Delete</i>
+                                </a>
+                            </td>
+               
+                        </tr>
+                    }
+                   
+                </tbody>
+            </table>
+        </div>
+        </div>
+ </body>

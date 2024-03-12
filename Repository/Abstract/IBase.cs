@@ -6,5 +6,6 @@ namespace AlRayan.Repository.Abstract
     {
         IEnumerable<SelectListItem> GetSelectList();
 
+
     }
 }

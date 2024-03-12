@@ -21,15 +21,19 @@ namespace AlRayan.Repository.Implementation
 
         public async Task Create(AssignCourseForm model)
         {
-            var selectedTeatcher = model.SelectedTeatchers;
-            List<Teatcher> teatchers = new List<Teatcher>();
+            #region get list of teatchers by id with ef
+            //var selectedTeatcher = model.SelectedTeatchers;
+            //List<Teatcher> teatchers = new List<Teatcher>(); 
+            //teatchers =_context.Teatchers.Where(x=>selectedTeatcher.Contains(x.UserId)).ToList();
+            #endregion
+            #region get list of teatchers by id 
             //foreach (var item in selectedTeatcher)
             //{
             //    Teatcher teatcher = _context.Teatchers.Where(i=>i.UserId==item).FirstOrDefault(); 
             //    teatchers.Add(teatcher);
-            //}
+            //} 
+            #endregion
 
-            teatchers =_context.Teatchers.Where(x=>selectedTeatcher.Contains(x.UserId)).ToList();
 
             Course course = new()
             {
@@ -40,8 +44,21 @@ namespace AlRayan.Repository.Implementation
             };
             _context.Add(course);
             _context.SaveChanges();
-            course.Teatchers = teatchers;
-            _context.SaveChanges();
+            #region save at teatcher table
+            //course.Teatchers = teatchers;
+            //_context.SaveChanges(); 
+            #endregion
+        }
+
+        public Course? GetById(int id)
+        {
+            return _context.Courses
+                .Where(i=>i.IsDeleted==false)
+                .Include(c => c.Center)
+                .Include(t => t.Teatchers)
+                .SingleOrDefault(c => c.Id == id);
+
+
         }
 
         public IEnumerable<SelectListItem> GetSelectList()
@@ -51,6 +68,20 @@ namespace AlRayan.Repository.Implementation
                   .OrderBy(c => c.Text)
                   .AsNoTracking()
                   .ToList();
+        }
+
+        public async Task<Course?> Update(EditCourseForm model)
+        {
+            var course = _context.Courses.Find(model.Id);
+            if (course == null)
+                return null; 
+            course.Name = model.Name;
+            course.Hours = model.Hours;
+            course.Description = model.Description;
+            course.CenterId = model.CenterId;
+
+            _context.SaveChanges();
+            return course;
         }
     }
 }

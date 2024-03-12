@@ -42,5 +42,35 @@ namespace AlRayan.Repository.Implementation
             _context.Add(teatcher);
             _context.SaveChanges();
         }
+
+        public Teatcher? GetById(int id)
+        {
+                // _context.Teatchers
+                //.Include(u => u.User)
+                //.ThenInclude(c => c.Center)
+                //.Include(u => u.Course)
+                //.AsNoTracking()
+                //.SingleOrDefault(t => t.Id == id);
+
+           return _context.Teatchers
+                .Include(u => u.User)
+                .Include(c => c.Center)
+                .Include(c => c.Course)
+                .AsNoTracking()
+                .SingleOrDefault(t => t.Id == id);
+            
+        }
+
+        public async Task<Teatcher?> Update(EditTeatcherForm model)
+        {
+            var teatcher = _context.Teatchers.Find(model.Id);
+            if (teatcher == null)
+                return null;
+            teatcher.CenterId = model.CenterId;
+            teatcher.CourseId = model.CourseId;
+            
+            _context.SaveChanges();
+            return teatcher;
+        }
     }
 }
