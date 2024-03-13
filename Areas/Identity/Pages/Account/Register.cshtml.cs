@@ -136,6 +136,7 @@ namespace AlRayan.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
+            returnUrl = "/Student";
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
@@ -150,6 +151,7 @@ namespace AlRayan.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                   
                     _context.Students.Add(new Models.MainEntity.Student { UserId=user.Id});
                     _logger.LogInformation("User created a new account with password.");
                     //assign student role 
@@ -216,6 +218,6 @@ namespace AlRayan.Areas.Identity.Pages.Account
             using var stream =System.IO.File.Create(path);
             await photo.CopyToAsync(stream);
             return photoName;
-        }
+        } 
     }
 }

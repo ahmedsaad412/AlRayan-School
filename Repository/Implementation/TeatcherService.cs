@@ -45,14 +45,7 @@ namespace AlRayan.Repository.Implementation
 
         public Teatcher? GetById(int id)
         {
-                // _context.Teatchers
-                //.Include(u => u.User)
-                //.ThenInclude(c => c.Center)
-                //.Include(u => u.Course)
-                //.AsNoTracking()
-                //.SingleOrDefault(t => t.Id == id);
-
-           return _context.Teatchers
+                 return _context.Teatchers
                 .Include(u => u.User)
                 .Include(c => c.Center)
                 .Include(c => c.Course)

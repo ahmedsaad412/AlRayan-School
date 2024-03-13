@@ -38,7 +38,6 @@ namespace AlRayan.Controllers
         [HttpGet]
         public IActionResult AssignTeatcher()
         {
-
             AssignTeatcherForm viewModel = new()
             {
                 Centers = _center.GetSelectList(),

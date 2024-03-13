@@ -1,13 +1,17 @@
-﻿
-@model ApplicationUser
+﻿@model StudentIndexViewModel
 <div class="d-flex align-items-center justify-content-center">
 
 <div class="card" style="width: 18rem;">
     <img class="card-img-top" alt="student image cap" src="@($"{FileSettings.FilePath}{Model.Photo}")">
     <div class="card-body">
-        <h5 class="card-title">@Model.FirstName</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text">My Courses : </p>
+            @foreach (var c in Model.CoursesName)
+            {
+                <small>@c.Name</small><br>
+            }
+            <a asp-controller="Student" asp-action="ChooseCourse" class="btn btn-primary"> Add New Course</a>
     </div>
 </div>
+
 </div>

@@ -10,7 +10,7 @@
             Courses = new HashSet<Student_Course>();
         }
 
-        ICollection<Student_Course> Courses { get; set; }
+        public ICollection<Student_Course> Courses { get; set; }
 
         //1-m user.
         public required string UserId { get; set; }
