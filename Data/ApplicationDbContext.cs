@@ -18,7 +18,13 @@ namespace AlRayan.Data
         {
         }
         protected override void OnModelCreating(ModelBuilder builder)
-        { 
+        {
+            builder.Entity<ApplicationUser>().HasQueryFilter(p=>!p.IsDeleted);
+            builder.Entity<Center>().HasQueryFilter(p=>!p.IsDeleted);
+            builder.Entity<Teatcher>().HasQueryFilter(p=>!p.IsDeleted);
+            builder.Entity<Student>().HasQueryFilter(p=>!p.IsDeleted);
+            builder.Entity<Course>().HasQueryFilter(p=>!p.IsDeleted);
+            builder.Entity<Student_Course>().HasQueryFilter(p=>!p.IsDeleted);
             base.OnModelCreating(builder);
             builder.Entity<ApplicationUser>().ToTable("Users","security");
             builder.Entity<IdentityRole>().ToTable("Roles","security");
