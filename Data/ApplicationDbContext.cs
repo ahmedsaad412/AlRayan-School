@@ -25,6 +25,7 @@ namespace AlRayan.Data
             builder.Entity<Student>().HasQueryFilter(p=>!p.IsDeleted);
             builder.Entity<Course>().HasQueryFilter(p=>!p.IsDeleted);
             builder.Entity<Student_Course>().HasQueryFilter(p=>!p.IsDeleted);
+
             base.OnModelCreating(builder);
             builder.Entity<ApplicationUser>().ToTable("Users","security");
             builder.Entity<IdentityRole>().ToTable("Roles","security");
