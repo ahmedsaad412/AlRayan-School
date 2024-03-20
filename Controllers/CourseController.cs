@@ -2,9 +2,12 @@
 using AlRayan.Repository.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Web.Helpers;
+
 
 namespace AlRayan.Controllers
 {
+
     public class CourseController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -21,15 +24,26 @@ namespace AlRayan.Controllers
 
         {
 
+            return View();
+        }
+        public IActionResult GetCourses()
+
+        {
+
             var courses = _db.Courses.Include(c => c.Center)
-                .ThenInclude(t => t.User)
+                
                 .AsNoTracking()
                 .ToList();
-            return View(courses);
+            
+            return Json(new {data = courses });
         }
 
+
+
+
+
         [HttpGet]
-        public async Task<IActionResult> Details(int id)
+        public IActionResult Details(int id)
         {
             var course = _course.GetById(id);
             if (course is null)
@@ -76,7 +90,7 @@ namespace AlRayan.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-
+        [HttpDelete]
         public ActionResult SoftDelete(int id)
         {
             var course = _course.GetById(id);

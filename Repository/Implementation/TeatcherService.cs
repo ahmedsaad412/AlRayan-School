@@ -23,13 +23,23 @@ namespace AlRayan.Repository.Implementation
         {
            // _context.Teatchers.Select(c => new SelectListItem { Value = , Text = c.UserName });
             return _user.Users
-                .Where(i => i.Type == Models.Type.teatcher)
+                .Where(i => i.Type == Models.Type.teatcher )
                 .Select(c => new SelectListItem { Value = c.Id, Text = c.UserName })
                 .OrderBy(c => c.Text)
                 .AsNoTracking()
                 .ToList();
         }
-        public async Task Create(AssignTeatcherForm model)
+        //public IEnumerable<SelectListItem> GetSelectListDistinct()
+        //{
+        //    return _user.Users
+        //        .Where(i => i.Type == Models.Type.teatcher  )
+        //        .Select(c => new SelectListItem { Value = c.Id, Text = c.UserName })
+        //        .OrderBy(c => c.Text)
+        //        .AsNoTracking()
+        //        .ToList();
+        //}
+
+            public async Task Create(AssignTeatcherForm model)
         {
             Teatcher teatcher = new()
             {

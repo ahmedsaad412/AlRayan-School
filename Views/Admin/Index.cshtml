@@ -1,2 +1,29 @@
 ﻿
-<h1>Hello Admin</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+</head>
+<body>
+
+<h1 style="text-align: center; font-weight: bold;">Hello Admin</h1>
+<button class="btn btn-primary" onclick="displayAlert()" >Show Alert</button>
+</body>
+
+</html>
+<script>
+    function displayAlert() {
+
+        Swal.fire({
+            title: "هل تريد الاستمرار؟",
+            icon: "question",
+            iconHtml: "؟",
+            confirmButtonText: "نعم",
+            cancelButtonText: "لا",
+            showCancelButton: true,
+            showCloseButton: true
+        });
+    }
+
+</script>
+

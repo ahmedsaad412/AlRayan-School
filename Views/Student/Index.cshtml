@@ -2,15 +2,24 @@
 <div class="d-flex align-items-center justify-content-center">
 
 <div class="card" style="width: 18rem;">
+    <div>
+        <h5 class="card-title" style="text-align: center; font-weight: bold;">@Model.Name</h5>
+        </div>
     <img class="card-img-top" alt="student image cap" src="@($"{FileSettings.FilePath}{Model.Photo}")">
     <div class="card-body">
-        <h5 class="card-title">@Model.Name</h5>
-            <p class="card-text">My Courses : </p>
-            @foreach (var c in Model.CoursesName)
-            {
-                <small>@c.Name</small><br>
-            }
-            <a asp-controller="Student" asp-action="ChooseCourse" class="btn btn-primary"> Add New Course</a>
+            <div class="dropdown">
+                <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false" style="margin-bottom: 1rem;">
+                    My Courses
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                     @foreach (var c in Model.CoursesName)
+                     {
+                             <li><a class="dropdown-item" href="#">@c.Name</a></li>
+                     }
+                </ul></div>
+            </div>
+            <a asp-controller="Student" asp-action="ChooseCourse" class="btn btn-success"> Add New Course</a>
     </div>
 </div>
 

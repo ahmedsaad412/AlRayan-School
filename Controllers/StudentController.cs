@@ -37,6 +37,7 @@ namespace AlRayan.Controllers
                     .Include(c=>c.Course)
                     .Where(c=>c.Student.UserId==UserId)
                     .Select(s => new CourseName { Name=s.Course.Name} )
+                    .Distinct()
                     .ToList();
                 //var courses = _db.Students
                  //   .Include(sc => sc.Courses)
@@ -49,8 +50,8 @@ namespace AlRayan.Controllers
             StudentIndexViewModel viewModel = new() { 
             
              Photo=student.Photo,
-            Name=student.FirstName+" "+student.LastName,
-           CoursesName= CoursesName
+             Name=student.FirstName+" "+student.LastName,
+             CoursesName= CoursesName
             };
 
 
