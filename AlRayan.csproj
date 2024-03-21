@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\js\course-index-delete.js" />
+    <None Include="wwwroot\js\Course\getAll.js" />
   </ItemGroup>
 
   <ItemGroup>

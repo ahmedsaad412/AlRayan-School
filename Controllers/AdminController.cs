@@ -74,30 +74,42 @@ namespace AlRayan.Controllers
             {
                 Centers = _center.GetSelectList(),
 
-                //Students= _student.GetSelectList(),
-
-                //Teatchers = _teatcher.GetSelectList(),
-
             };
             return View(viewModel);
             
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignCourse(AssignCourseForm model)
+        [HttpPost ]
+        public async Task<IActionResult> AddCourse(AssignCourseForm model)
         {
-            if (!ModelState.IsValid)
-            {
-                model.Centers = _center.GetSelectList();
-
-                //model.Students = _student.GetSelectList();
-
-                //model.Teatchers = _teatcher.GetSelectList();
-
-                return View(model);
-            }
+            if (!ModelState.IsValid) return BadRequest("Enter required fields");
             await _course.Create(model);
-            return RedirectToAction(nameof(Index));
+            return Ok($"Form Data received!");
+
+            //{
+            //    if (!ModelState.IsValid)
+            //    {
+            //        model.Centers = _center.GetSelectList();
+            //        return View(model);
+            //    }
+            //      _course.Create(model);
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> AddCourse(AssignCourseForm model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        model.Centers = _center.GetSelectList();
+
+        //        //model.Students = _student.GetSelectList();
+
+        //        //model.Teatchers = _teatcher.GetSelectList();
+
+        //        return View(model);
+        //    }
+        //    await _course.Create(model);
+        //    return RedirectToAction(nameof(Index));
+        //}
     }
     }
