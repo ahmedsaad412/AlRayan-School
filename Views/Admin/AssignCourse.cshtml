@@ -33,7 +33,7 @@
 
             <div class="form-group">
                 <label for="CenterId" class="form-label mt-4"></label>
-                <select class="form-select" for="CenterId" id="centerId" asp-items="Model.Centers"
+                <select class="form-select select2 for="CenterId" id="centerId" asp-items="Model.Centers"
                         data-placeholder="Select Center" data-minimum-results-for-search="Infinity">
                     <option></option>
 
@@ -62,7 +62,13 @@
                     alert("Only 10 textboxes allowed");
                     return false;
                 } 
-                else { 
+                else {
+                    // $('.select2').select2('destroy');
+                    // $('.select2')
+                    //     .removeAttr('data-live-search')
+                    //     .removeAttr('data-select2-id')
+                    //     .removeAttr('aria-hidden')
+                    //     .removeAttr('tabindex');
                 $(".MyForm")
                     .eq(0)
                     .clone()
@@ -71,6 +77,7 @@
                     .insertAfter(".MyForm:last");
                     counter++;
                 }
+                //$(".select2").select2();
             });
             $('.container').on('click', ".cancel", function () {
                

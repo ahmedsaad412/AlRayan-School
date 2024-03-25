@@ -1,0 +1,92 @@
+﻿@model AssignCourseForm
+
+@{
+    ViewData["Title"] = "New Course";
+}
+
+
+<div class="row " >
+    <div class="col-6">
+        <button type="button" id="addNewForm" class="btn btn-primary mb-4 p-2 "><i class="bi bi-plus-circle-fill p-2"></i></button>
+    </div>
+    @*d-flex*@
+ <div class="col-6 text-center container ">
+  <form class="border border-dark p-3 mb-2 bg-primary MyForm"  method="post">
+    <div class=" row">
+        <div class="col-md-6 ">
+            <div>
+                        <input type="text" class="form-control name mt-4" placeholder="Enter Course Name">
+            </div>
+            <div>
+                <input type="text" class="form-control description mt-4" placeholder="Enter Description">
+            </div>
+            <div>
+                        <input type="text" class="form-control hours mt-4" placeholder="Enter Hours">
+            </div>
+                    <div class="form-group mt-4">
+                <select class="form-select " data-placeholder="Select Center" data-minimum-results-for-search="Infinity">
+                    <option selected>Open this select menu</option>
+                    <option value="1">AI</option>
+                    <option value="2">Deep Learning</option>
+                    <option value="2">Machine Learning</option>
+                </select>     
+          </div>
+                    <button type="button" class="mt-1 cancel btn btn-secondary">حذف</button>
+        </div>
+    </div>
+ </form>
+ </div>
+    <div class="col-12 text-center">
+        <input type="button" value="حفظ" onclick="AddCourse()" class="btn btn-primary col-6 text-black mt-4"/>
+    </div>
+</div>
+@section Scripts {
+
+    <script type="text/javascript" src="~/js/course/TestAssignCourse.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            debugger;
+            
+            let counter = 1;
+            $("#addNewForm").click(function () {
+                if (counter > 10) {
+                    alert("Only 10 textboxes allowed");
+                    return false;
+                } 
+                else 
+                {
+                    $('select').select2('destroy');
+                    $('select')
+                        .removeAttr('data-live-search')
+                        .removeAttr('data-select2-id')
+                        .removeAttr('aria-hidden')
+                        .removeAttr('tabindex');
+                    var cc = $('select').last();
+                    console.log(cc);
+                   
+                $(".MyForm")
+                    .eq(0)                    
+                    .clone()
+                    .find("input").val("").end()
+                    .show()
+                    .insertAfter(".MyForm:last")
+                    counter++;
+                }
+                $('select').select2();
+            });
+            $('.container').on('click', ".cancel", function () {
+               
+                if (counter > 1) {
+                    $(this).closest('.MyForm').remove();
+                    counter--;
+                } else {
+                    
+                    alert("Cannot remove the first form.");
+                }
+                
+            });
+        });  
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

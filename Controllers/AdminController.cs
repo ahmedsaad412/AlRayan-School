@@ -78,6 +78,17 @@ namespace AlRayan.Controllers
             return View(viewModel);
             
         }
+        [HttpGet]
+        public IActionResult TestAssignCourse()
+        {
+            AssignCourseForm viewModel = new()
+            {
+                Centers = _center.GetSelectList(),
+
+            };
+            return View(viewModel);
+            
+        }
         [HttpPost ]
         public async Task<IActionResult> AddCourse(AssignCourseForm model)
         {
