@@ -5,8 +5,14 @@
 }
 
 
+<div class="row " >
+    <div class="col-6">
+        <button type="button" id="addNewForm" class="btn btn-primary mb-4 p-2 "><i class="bi bi-plus-circle-fill p-2"></i></button>
+    </div>
+    @*d-flex*@
+ <div class="col-6 text-center container ">
+  <form class="border border-dark p-3 mb-2 bg-primary MyForm" id="MyForm" method="post">
 
- <form  id="MyForm" method="post">
     <div class=" row">
         <div class="col-md-6 ">
             <div>
@@ -34,46 +40,50 @@
                 </select>
                 <span asp-validation-for="CenterId" class="text-danger"></span>
             </div>
+                    <button type="button" class="mt-1 cancel btn btn-secondary">حذف</button>
         </div>
-        <input type="button" value="حفظ" onclick="AddCourse()" class="btn btn-light text-black mt-4"/>
     </div>
-  
+ </form>
 
-</form>
-
+ </div>
+    <div class="col-12 text-center">
+        <input type="button" value="حفظ" onclick="AddCourse()" class="btn btn-primary col-6 text-black mt-4"/>
+    </div>
+</div>
 @section Scripts {
-    <script type="text/javascript">
 
-        function AddCourse() {
-            var name= $("#name").val();
-            var description= $("#description").val();
-            var hours= $("#hours").val();
-            var centerId = 1; 
-            let fd = new FormData();
-            fd.append("Name" ,name)
-            fd.append("Description", description)
-            fd.append("Hours", hours)
-            fd.append("CenterId", centerId)
-            console.log(fd);
-            console.log(name)
-            console.log(hours)
-
-            $.ajax({
-                url: "/Admin/AddCourse",
-                type: "POST",
-                contentType: false,
-                processData:false,
-                data:fd,
-                success: function () {
-                    console.log("sss")
-                 
-               },
-                error: function () {
-                    alert('Failed to receive the Data');
-                    console.log('Failed ');
+    <script type="text/javascript" src="~/js/course/assigncourse.js"></script>
+    <script>
+        $(document).ready(function () {
+            debugger;
+            let counter = 1;
+            $("#addNewForm").click(function () {
+                if (counter > 10) {
+                    alert("Only 10 textboxes allowed");
+                    return false;
+                } 
+                else { 
+                $(".MyForm")
+                    .eq(0)
+                    .clone()
+                    .find("input").val("").end()
+                    .show()
+                    .insertAfter(".MyForm:last");
+                    counter++;
                 }
             });
-        }
+            $('.container').on('click', ".cancel", function () {
+               
+                if (counter > 1) {
+                    $(this).closest('.MyForm').remove();
+                    counter--;
+                } else {
+                    
+                    alert("Cannot remove the first form.");
+                }
+                
+            });
+        });  
     </script>
     <partial name="_ValidationScriptsPartial" />
 }
