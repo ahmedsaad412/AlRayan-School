@@ -2,7 +2,7 @@
 
 namespace AlRayan.ViewModel.Center
 {
-    public class AssignCenterForm
+    public class AssignCenterFormViewModel
     {
         public string CenterName { get; set; }
         public string UserId { get; set; }

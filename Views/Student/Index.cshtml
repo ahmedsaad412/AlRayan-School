@@ -6,6 +6,8 @@
         <h5 class="card-title" style="text-align: center; font-weight: bold;">@Model.Name</h5>
         </div>
     <img class="card-img-top" alt="student image cap" src="@($"{FileSettings.FilePath}{Model.Photo}")">
+ @if (User.IsInRole("Student"))
+    {
     <div class="card-body">
             <div class="dropdown">
                 <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
@@ -17,10 +19,12 @@
                      {
                              <li><a class="dropdown-item" href="#">@c.Name</a></li>
                      }
-                </ul></div>
+                </ul>
+                </div>
             </div>
             <a asp-controller="Student" asp-action="ChooseCourse" class="btn btn-success"> Add New Course</a>
-    </div>
+     }    
+        </div>
 </div>
 
 </div>

@@ -1,6 +1,6 @@
 ﻿namespace AlRayan.ViewModel.Course
 {
-    public class Test
+    public class TestViewModel
     {
         public string name { get; set; }
         public string description { get; set; }

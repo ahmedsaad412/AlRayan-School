@@ -17,7 +17,7 @@
 
                              <td><a href="/Course/Details/${course.id}" type="button" class="btn" ><i class="material-icons text-primary">Details</i></a>
                                          <a href="/Course/Edit/${course.id}" type="button" class="btn" ><i class="material-icons text-warning">Edit</i></a>
-                                         <a href="/Course/SoftDelete/${course.id}" type="button" class="btn" ><i class="material-icons text-danger">Delete</i></td>
+                                         <a href="/Course/SoftDelete/${course.id}" type="button" class="btn js-delete" ><i class="material-icons text-danger">Delete</i></td>
                                      </td></tr>`
                             );
                     });

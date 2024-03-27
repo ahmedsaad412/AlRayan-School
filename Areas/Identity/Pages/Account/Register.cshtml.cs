@@ -145,6 +145,7 @@ namespace AlRayan.Areas.Identity.Pages.Account
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
                 user.Photo = photoName;
+                user.Type = Models.Type.student;
                 await _userStore.SetUserNameAsync(user,new MailAddress( Input.Email).User, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

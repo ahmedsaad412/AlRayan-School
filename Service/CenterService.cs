@@ -1,9 +1,7 @@
 ﻿using AlRayan.Data;
-using AlRayan.Repository.Abstract;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace AlRayan.Repository.Implementation
+namespace AlRayan.Service
 {
     public class CenterService : ICenterService
     {
@@ -19,6 +17,10 @@ namespace AlRayan.Repository.Implementation
                 .OrderBy(c => c.Text)
                 .AsNoTracking()
                 .ToList();
+        }
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

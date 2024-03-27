@@ -1,6 +1,4 @@
 ﻿using AlRayan.Data;
-using AlRayan.Settings;
-using AlRayan.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,36 +13,24 @@ namespace AlRayan.Controllers
         private readonly UserManager<ApplicationUser> _userManger;
         private readonly RoleManager<IdentityRole> _roleManger;
         private readonly ApplicationDbContext _db;
+        private readonly IUserService _userService;
         
         private readonly IWebHostEnvironment _webHost;
         private readonly string _imagePath;
 
-        public UsersController(UserManager<ApplicationUser> user, RoleManager<IdentityRole> role, ApplicationDbContext db, IWebHostEnvironment webHost)
+        public UsersController(UserManager<ApplicationUser> user, RoleManager<IdentityRole> role, ApplicationDbContext db, IWebHostEnvironment webHost ,IUserService userService)
         {
             _userManger = user;
             _roleManger = role;
             _db = db;
             _webHost = webHost;
+            _userService = userService;
             _imagePath = $"{_webHost.WebRootPath}{FileSettings.FilePath}";
         }
         public IActionResult Index()
         { 
-
-
-            var users = _db.Users.Select(user => new UserViewModel
-            {
-                Id = user.Id,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                UserName = user.UserName,
-                Roles = _userManger.GetRolesAsync(user).Result,
-            }).ToList();
-
+            var users = _userService.GetAllUsers();
             return View(users);
-
-
-
         }
 
         [HttpGet]
@@ -60,7 +46,7 @@ namespace AlRayan.Controllers
            if(!ModelState.IsValid) 
                 return View(model);
              
-            if(await _userManger.FindByEmailAsync(model.Email)is not null )
+            if(await _userManger.FindByEmailAsync(model.Email) is not null )
             {
                 ModelState.AddModelError("Email","Email is already exists");
                 return View(model);
@@ -71,16 +57,8 @@ namespace AlRayan.Controllers
 
                 return View(model);
             }
-            var photoName = await SavePhoto(model.Photo);
             var user = CreateUser();
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.Photo = photoName;
-            user.Email = model.Email;
-            user.UserName= model.UserName;
-          
-            var result = await _userManger.CreateAsync(user, model.Password);
-
+            var result =await _userService.AddNewUser(model ,user);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -90,8 +68,7 @@ namespace AlRayan.Controllers
                 return View(model);
 
             }
-            await _userManger.AddToRoleAsync(user, "Teatcher");
-            //_db.Teatchers.Add(new Models.MainEntity.Teatcher { UserId=user.Id });
+            await _userManger.AddToRoleAsync(user, "Teatcher");  
             return RedirectToAction(nameof(Index));
 
         }
@@ -101,19 +78,14 @@ namespace AlRayan.Controllers
          //name and role id ,name with selected role that assigned to this user
             var user = await _userManger.FindByIdAsync(userId);
             if (user == null)
-                return NotFound();
-            var roles = await _roleManger.Roles.ToListAsync();
+                return NotFound();  
             var viewModel = new UserRoleViewModel
             {
                 UserId = user.Id,
                 UserName = user.UserName,
-                Roles = roles.Select(role => new RoleViewModel
-                {
-                    RoleId = role.Id,
-                    RoleName = role.Name,
-                    IsSelected = _userManger.IsInRoleAsync(user, role.Name).Result
-                }).ToList()
+                Roles = _userService.GetAllRoles(user)
             };
+            
             return View(viewModel);
         }
 
@@ -141,7 +113,7 @@ namespace AlRayan.Controllers
             return RedirectToAction(nameof(Index));
 
         }
-        private ApplicationUser CreateUser()
+        public static ApplicationUser CreateUser()
         {
             try
             {

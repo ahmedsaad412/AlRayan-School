@@ -1,7 +1,4 @@
 using AlRayan.Data;
-using AlRayan.Models;
-using AlRayan.Repository.Abstract;
-using AlRayan.Repository.Implementation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +20,8 @@ namespace AlRayan
             builder.Services.AddScoped<ICourseService, CourseService>();
             builder.Services.AddScoped<ITeatcherService,TeatcherService>();
             builder.Services.AddScoped<IStudentService,StudentService>();
+            builder.Services.AddScoped<IUserService,UserService>();
+            builder.Services.AddScoped<IUserData,UserData>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

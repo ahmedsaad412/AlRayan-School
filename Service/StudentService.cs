@@ -1,27 +1,25 @@
 ﻿using AlRayan.Data;
 using AlRayan.Models.MainEntity;
-using AlRayan.Repository.Abstract;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-namespace AlRayan.Repository.Implementation
+namespace AlRayan.Service
 {
     public class StudentService : IStudentService
-    { 
+    {
         private readonly ApplicationDbContext _context;
-    
+
         private readonly UserManager<ApplicationUser> _user;
         public StudentService(ApplicationDbContext context, UserManager<ApplicationUser> user)
         {
             _context = context;
             _user = user;
         }
-        
+
         public async Task AssignCourse(ChooseCourseViewModel model)
         {
 
-             var student =_context.Students.Where(x=>x.UserId== model.UserId).FirstOrDefault();
+            var student = _context.Students.Where(x => x.UserId == model.UserId).FirstOrDefault();
             if (student is not null)
             {
                 Student_Course student_Course = new()
@@ -36,6 +34,17 @@ namespace AlRayan.Repository.Implementation
             }
         }
 
+        public List<CourseName> GetMyCourses(string userId)
+        {
+            return _context.Student_Courses
+                    .Include(s => s.Student)
+                    .Include(c => c.Course)
+                    .Where(c => c.Student.UserId == userId)
+                    .Select(s => new CourseName { Name = s.Course.Name })
+                    .Distinct()
+                    .ToList();
+        }
+
         public IEnumerable<SelectListItem> GetSelectList()
         {
             return _user.Users
@@ -44,6 +53,10 @@ namespace AlRayan.Repository.Implementation
                  .OrderBy(c => c.Text)
                  .AsNoTracking()
                  .ToList();
+        }
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace AlRayan.ViewModel.Course
 {
-    public class AssignCourseForm
+    public class AssignCourseFormViewModel
     {
         
         public string Name { get; set; }

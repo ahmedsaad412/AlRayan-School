@@ -1,6 +1,6 @@
 ﻿namespace AlRayan.ViewModel.Teatcher
 {
-    public class EditTeatcherForm
+    public class EditTeatcherFormViewModel
     {
         public int Id { get; set; }
         public string? Name { get; set; }

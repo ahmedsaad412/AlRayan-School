@@ -1,7 +1,7 @@
-﻿@model AssignTeatcherForm
+﻿@model AssignTeatcherFormViewModel
 
 @{
-    ViewData["Title"] = "New Teatcher";
+    ViewData["Title"] = "Assign Teatcher";
 }
 
 
@@ -12,13 +12,14 @@
         <div class="col-md-6 ">
             
             <div class="form-group">
-                <label asp-for="UserId" class="form-label mt-4"></label>
-                <select class="form-select" asp-for="UserId" asp-items="Model.Teatchers"
-                        data-placeholder="Select Teatcher" data-minimum-results-for-search="Infinity">
-                    <option></option>
-
+                <label for="teachers" class="form-label mt-4"></label>
+                <select class="form-select" name="teachers" id="teachers" data-placeholder="Select Teatcher" data-minimum-results-for-search="Infinity">
+                    <option value="">Choose a teacher</option>
+                    @foreach (var teacher in Model.Teatchers)
+                    {
+                        <option value="@teacher.Id">@teacher.UserName</option>
+                    }
                 </select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
             </div> 
             <div class="form-group">
                 <label asp-for="CenterId" class="form-label mt-4"></label>

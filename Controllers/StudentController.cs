@@ -1,11 +1,7 @@
 ﻿using AlRayan.Data;
-using AlRayan.Models.MainEntity;
-using AlRayan.Repository.Abstract;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace AlRayan.Controllers
@@ -13,59 +9,37 @@ namespace AlRayan.Controllers
     [Authorize(Roles ="Student")]
     public class StudentController : Controller
     {
-        private readonly ApplicationDbContext _db;
         private readonly ICourseService _course;
         private readonly IStudentService _student;
-
+        private readonly IUserData _userData;
         private string UserId { get { return User.FindFirstValue(ClaimTypes.NameIdentifier); } }
-
-        public StudentController(ApplicationDbContext db, ICourseService course, IStudentService student)
+        public StudentController(ICourseService course, IStudentService student, IUserData userData)
         {
-            _db = db;
             _course = course;
             _student = student;
+            _userData = userData;
         }
         public IActionResult Index()
-        { 
-            
-            var student= _db.Users.Where(x=>x.Id==UserId).FirstOrDefault();
+        {
+            var student = _userData.GetSignInUser(UserId);
             List<CourseName> CoursesName= new List<CourseName>();
             if (student is not null)
             {
-                 CoursesName = _db.Student_Courses
-                    .Include(s=>s.Student)
-                    .Include(c=>c.Course)
-                    .Where(c=>c.Student.UserId==UserId)
-                    .Select(s => new CourseName { Name=s.Course.Name} )
-                    .Distinct()
-                    .ToList();
-                //var courses = _db.Students
-                 //   .Include(sc => sc.Courses)
-                 //   .ThenInclude(c => c.Course)
-                 //   .Where(i => i.UserId == student.Id)
-                 //   .ToList();
-               
-
+                CoursesName = _student.GetMyCourses(UserId);
             }
             StudentIndexViewModel viewModel = new() { 
-            
              Photo=student.Photo,
              Name=student.FirstName+" "+student.LastName,
              CoursesName= CoursesName
             };
-
-
-            return View(viewModel);
-            
+            return View(viewModel);        
         }
-
         [HttpGet]
         public IActionResult ChooseCourse()
         {
             ChooseCourseViewModel viewModel = new()
             {
                 Courses = _course.GetSelectList()
-
             };
                return View(viewModel);
         }

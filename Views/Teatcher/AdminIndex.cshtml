@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Teatcher>
 
 <body class="bg-light">
-    <a asp-controller="Admin" asp-action="AssignTeatcher" class="btn btn-primary"> Add New Teatcher</a>
+    <a asp-controller="Admin" asp-action="AssignTeatcher" class="btn btn-primary">Assigne Teatcher </a>
     <!-- Main body -->
     <div class="container">
         <!-- Table -->
@@ -23,7 +23,7 @@
                         <tr>
                             <td></td>
                             <td>
-                                @Html.DisplayFor(x => teatcher.User.FirstName)
+                                @Html.DisplayFor(x => teatcher.User.UserName)
                             </td>
                             <td>
                                 @Html.DisplayFor(x => teatcher.Center.CenterName)
@@ -41,7 +41,7 @@
                                 <a asp-controller="Teatcher" asp-action="Edit" asp-route-id="@teatcher.Id" type="button" class="btn">
                                     <i class="material-icons text-warning">edit</i>
                                 </a>
-                                <a asp-controller="Teatcher" asp-action="Index" asp-controller="Course" asp-route-id="@teatcher.Id" type="button" class="btn">
+                                <a asp-controller="Teatcher" asp-action="SoftDelete" asp-route-id="@teatcher.Id" type="button" class="btn">
                                     <i class="material-icons text-danger">delete</i>
                                 </a>
                             </td>

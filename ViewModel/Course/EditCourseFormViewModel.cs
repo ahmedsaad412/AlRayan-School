@@ -1,6 +1,6 @@
 ﻿namespace AlRayan.ViewModel.Course
 {
-    public class EditCourseForm
+    public class EditCourseFormViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

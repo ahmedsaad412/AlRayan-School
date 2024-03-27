@@ -1,31 +1,19 @@
 ﻿using AlRayan.Data;
-using AlRayan.Models.MainEntity;
-using AlRayan.Repository.Abstract;
-using AlRayan.ViewModel.Course;
-using AlRayan.ViewModel.Teatcher;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace AlRayan.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManger;
-        private readonly RoleManager<IdentityRole> _roleManger;
-        private readonly ApplicationDbContext _db;
         private readonly ICenterService _center;
         private readonly ITeatcherService _teatcher;
         private readonly ICourseService _course;
         private readonly IStudentService _student;
-        public AdminController(ApplicationDbContext db, RoleManager<IdentityRole> roleManger, UserManager<ApplicationUser> userManger, ICenterService center, ICourseService course, ITeatcherService teatcher, IStudentService student)
+        public AdminController( ICenterService center, ICourseService course, ITeatcherService teatcher, IStudentService student)
         {
-            _db = db;
-            _roleManger = roleManger;
-            _userManger = userManger;
             _center = center;
             _course = course;
             _teatcher = teatcher;
@@ -38,28 +26,28 @@ namespace AlRayan.Controllers
         [HttpGet]
         public IActionResult AssignTeatcher()
         {
-            AssignTeatcherForm viewModel = new()
+            AssignTeatcherFormViewModel viewModel = new()
             {
                 Centers = _center.GetSelectList(),
 
                 Courses = _course.GetSelectList(),
 
-                Teatchers = _teatcher.GetSelectList(),
-
+                Teatchers = _teatcher.GetSelectListDistinct(),
             };
             return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignTeatcher(AssignTeatcherForm model)
+        public async Task<IActionResult> AssignTeatcher(AssignTeatcherFormViewModel model)
         {
+          
             if (!ModelState.IsValid)
             {
                 model.Centers = _center.GetSelectList();
 
                 model.Courses = _course.GetSelectList();
 
-                model.Teatchers = _teatcher.GetSelectList();
+                model.Teatchers = _teatcher.GetSelectListDistinct();
 
                 return View(model);
             }
@@ -70,7 +58,7 @@ namespace AlRayan.Controllers
         [HttpGet]
         public IActionResult AssignCourse()
         {
-            AssignCourseForm viewModel = new()
+            AssignCourseFormViewModel viewModel = new()
             {
                 Centers = _center.GetSelectList(),
 
@@ -81,7 +69,7 @@ namespace AlRayan.Controllers
         [HttpGet]
         public IActionResult TestAssignCourse()
         {
-            AssignCourseForm viewModel = new()
+            AssignCourseFormViewModel viewModel = new()
             {
                 Centers = _center.GetSelectList(),
 
@@ -90,19 +78,13 @@ namespace AlRayan.Controllers
             
         }
         [HttpPost ]
-        public async Task<IActionResult> AddCourse(AssignCourseForm model)
+        public async Task<IActionResult> AddCourse(AssignCourseFormViewModel model)
         {
             if (!ModelState.IsValid) return BadRequest("Enter required fields");
             await _course.Create(model);
             return Ok($"Form Data received!");
 
-            //{
-            //    if (!ModelState.IsValid)
-            //    {
-            //        model.Centers = _center.GetSelectList();
-            //        return View(model);
-            //    }
-            //      _course.Create(model);
+           
         }
 
         //[HttpPost]

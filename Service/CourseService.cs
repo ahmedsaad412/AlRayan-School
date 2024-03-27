@@ -1,14 +1,12 @@
 ﻿using AlRayan.Data;
 using AlRayan.Models.MainEntity;
-using AlRayan.Repository.Abstract;
-using AlRayan.ViewModel.Course;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
-namespace AlRayan.Repository.Implementation
+namespace AlRayan.Service
 {
-    public class CourseService:ICourseService
+    public class CourseService : ICourseService
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _user;
@@ -19,7 +17,37 @@ namespace AlRayan.Repository.Implementation
             _user = user;
         }
 
-        public async Task Create(AssignCourseForm model)
+        public Course? GetById(int id)
+        {
+            return _context.Courses
+                .Where(i => i.IsDeleted == false)
+                .Include(c => c.Center)
+                .Include(t => t.Teatchers)
+                .SingleOrDefault(c => c.Id == id);
+
+
+        }
+        public IEnumerable<Course> GetAllCourses()
+        {
+            return _context.Courses
+                    .Include(c => c.Center)
+                    .AsNoTracking()
+                    .ToList();
+        }
+
+        public IEnumerable<Teatcher> GetAllTeatchersInCourse(int id)
+        {
+           return _context.Teatchers.Where(a => a.CourseId == id).ToList();
+        }
+        public IEnumerable<SelectListItem> GetSelectList()
+        {
+            return _context.Courses
+                  .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
+                  .OrderBy(c => c.Text)
+                  .AsNoTracking()
+                  .ToList();
+        }
+        public async Task Create(AssignCourseFormViewModel model)
         {
             #region get list of teatchers by id with ef
             //var selectedTeatcher = model.SelectedTeatchers;
@@ -49,32 +77,16 @@ namespace AlRayan.Repository.Implementation
             //_context.SaveChanges(); 
             #endregion
         }
-
-        public Course? GetById(int id)
+        public int RemoveTeatchersInCourse(IEnumerable<Teatcher> relatedTeatcher)
         {
-            return _context.Courses
-                .Where(i=>i.IsDeleted==false)
-                .Include(c => c.Center)
-                .Include(t => t.Teatchers)
-                .SingleOrDefault(c => c.Id == id);
-
-
+            _context.Teatchers.RemoveRange(relatedTeatcher);
+            return _context.SaveChanges();
         }
-
-        public IEnumerable<SelectListItem> GetSelectList()
-        {
-            return _context.Courses
-                  .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
-                  .OrderBy(c => c.Text)
-                  .AsNoTracking()
-                  .ToList();
-        }
-
-        public async Task<Course?> Update(EditCourseForm model)
+        public async Task<Course?> Update(EditCourseFormViewModel model)
         {
             var course = _context.Courses.Find(model.Id);
             if (course == null)
-                return null; 
+                return null;
             course.Name = model.Name;
             course.Hours = model.Hours;
             course.Description = model.Description;
@@ -83,5 +95,10 @@ namespace AlRayan.Repository.Implementation
             _context.SaveChanges();
             return course;
         }
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
+
     }
 }

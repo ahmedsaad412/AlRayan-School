@@ -1,47 +1,27 @@
-﻿using AlRayan.Data;
-using AlRayan.Repository.Abstract;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Web.Helpers;
-
-
+﻿using Microsoft.AspNetCore.Mvc;
 namespace AlRayan.Controllers
 {
 
     public class CourseController : Controller
     {
-        private readonly ApplicationDbContext _db;
         private readonly ICourseService _course;
         private readonly ICenterService _center;
-
-        public CourseController(ApplicationDbContext db, ICourseService course, ICenterService center)
+        public CourseController(ICourseService course, ICenterService center)
         {
-            _db = db;
             _course = course;
             _center = center;
         }
         public IActionResult Index()
 
         {
-
             return View();
         }
         public IActionResult GetCourses()
-
         {
-
-            var courses = _db.Courses.Include(c => c.Center)
-                
-                .AsNoTracking()
-                .ToList();
+            var courses = _course.GetAllCourses();
             
             return Json(new {data = courses });
         }
-
-
-
-
-
         [HttpGet]
         public IActionResult Details(int id)
         {
@@ -60,8 +40,7 @@ namespace AlRayan.Controllers
             {
                 return NotFound();
             }
-            EditCourseForm viewModel = new()
-
+            EditCourseFormViewModel viewModel = new()
             {
                 Id = id,
                 Name = course.Name,
@@ -77,7 +56,7 @@ namespace AlRayan.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(EditCourseForm model)
+        public async Task<IActionResult> Edit(EditCourseFormViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -88,9 +67,7 @@ namespace AlRayan.Controllers
             if (course is null)
                 return BadRequest();
             return RedirectToAction(nameof(Index));
-
-        }
-        [HttpDelete]
+        } 
         public ActionResult SoftDelete(int id)
         {
             var course = _course.GetById(id);
@@ -99,10 +76,14 @@ namespace AlRayan.Controllers
                 return NotFound();
             }
             
-                course.IsDeleted = true;
-                _db.SaveChanges();
-            
-            return RedirectToAction("Index");
+            course.IsDeleted = true;
+            var relatedTeatcher = _course.GetAllTeatchersInCourse(id);
+            var x = _course.RemoveTeatchersInCourse(relatedTeatcher);
+            if (x > 0) 
+            {
+                return RedirectToAction("Index"); 
+            }  
+            return BadRequest();
         }
     }
 }
