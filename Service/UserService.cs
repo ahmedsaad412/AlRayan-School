@@ -1,6 +1,7 @@
 ﻿
 using AlRayan.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlRayan.Service
 {
@@ -33,16 +34,6 @@ namespace AlRayan.Service
 
             var result = await _userManager.CreateAsync(user, model.Password);
             return result;
-        }
-
-        public List<RoleViewModel> GetAllRoles(ApplicationUser user)
-        {
-           return _roleManager.Roles.Select(role => new RoleViewModel
-            {
-                RoleId = role.Id,
-                RoleName = role.Name,
-                IsSelected = _userManager.IsInRoleAsync(user, role.Name).Result
-            }).ToList();
         }
         public List<UserViewModel> GetAllUsers()
         {

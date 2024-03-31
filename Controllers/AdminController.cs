@@ -47,7 +47,7 @@ namespace AlRayan.Controllers
 
                 model.Courses = _course.GetSelectList();
 
-                model.Teatchers = _teatcher.GetSelectListDistinct();
+                model.Teatchers =_teatcher.GetSelectListDistinct();
 
                 return View(model);
             }

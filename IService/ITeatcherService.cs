@@ -6,7 +6,7 @@ namespace AlRayan.IService
     {
         
         Teatcher? GetById(int id);
-        public IEnumerable<ApplicationUser> GetSelectListDistinct();
+        public IEnumerable<SelectListItem> GetSelectListDistinct();
         Task Create(AssignTeatcherFormViewModel model);
         Task<Teatcher?> Update(EditTeatcherFormViewModel model);
         IEnumerable<Teatcher>? GetAllTeatchers();

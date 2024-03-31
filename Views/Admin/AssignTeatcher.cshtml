@@ -10,26 +10,26 @@
 
     <div class=" row">
         <div class="col-md-6 ">
-            
+
             <div class="form-group">
-                <label for="teachers" class="form-label mt-4"></label>
-                <select class="form-select" name="teachers" id="teachers" data-placeholder="Select Teatcher" data-minimum-results-for-search="Infinity">
-                    <option value="">Choose a teacher</option>
-                    @foreach (var teacher in Model.Teatchers)
-                    {
-                        <option value="@teacher.Id">@teacher.UserName</option>
-                    }
-                </select>
-            </div> 
-            <div class="form-group">
-                <label asp-for="CenterId" class="form-label mt-4"></label>
-                <select class="form-select" asp-for="CenterId" asp-items="Model.Centers"
+
+                <label asp-for="Id" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="Id" asp-items="Model.Teatchers"
                         data-placeholder="Select Center" data-minimum-results-for-search="Infinity">
                     <option></option>
 
                 </select>
-                <span asp-validation-for="CenterId" class="text-danger"></span>
+                <span asp-validation-for="Id" class="text-danger"></span>
             </div> 
+            @*<div class="form-group">
+            <label asp-for="CenterId" class="form-label mt-4"></label>
+            <select class="form-select" asp-for="CenterId" asp-items="Model.Centers"
+            data-placeholder="Select Center" data-minimum-results-for-search="Infinity">
+            <option></option>
+            </select>
+            <span asp-validation-for="CenterId" class="text-danger"></span>
+            </div>
+            <div class="form-group">*@
             <div class="form-group">
                 <label asp-for="CourseId" class="form-label mt-4"></label>
                 <select class="form-select" asp-for="CourseId" asp-items="Model.Courses"

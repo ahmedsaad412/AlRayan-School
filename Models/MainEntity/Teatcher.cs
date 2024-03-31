@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public bool? IsMarried { get; set; }
-        public bool IsDeleted { get; set; }  
+        public bool IsDeleted { get; set; } 
 
         public int CourseId { get; set; }
         public Course Course { get; set; }

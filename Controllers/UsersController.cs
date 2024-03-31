@@ -14,18 +14,13 @@ namespace AlRayan.Controllers
         private readonly RoleManager<IdentityRole> _roleManger;
         private readonly ApplicationDbContext _db;
         private readonly IUserService _userService;
-        
-        private readonly IWebHostEnvironment _webHost;
-        private readonly string _imagePath;
-
-        public UsersController(UserManager<ApplicationUser> user, RoleManager<IdentityRole> role, ApplicationDbContext db, IWebHostEnvironment webHost ,IUserService userService)
+        public UsersController(UserManager<ApplicationUser> user, RoleManager<IdentityRole> role, ApplicationDbContext db,IUserService userService)
         {
             _userManger = user;
             _roleManger = role;
             _db = db;
-            _webHost = webHost;
             _userService = userService;
-            _imagePath = $"{_webHost.WebRootPath}{FileSettings.FilePath}";
+            
         }
         public IActionResult Index()
         { 
@@ -74,17 +69,22 @@ namespace AlRayan.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> ManageRoles(string userId)
-        {//get specific user & all roles => return userid ,
-         //name and role id ,name with selected role that assigned to this user
+        { 
             var user = await _userManger.FindByIdAsync(userId);
+            var roles =await _roleManger.Roles.ToListAsync();
             if (user == null)
-                return NotFound();  
+                return NotFound();
             var viewModel = new UserRoleViewModel
             {
                 UserId = user.Id,
                 UserName = user.UserName,
-                Roles = _userService.GetAllRoles(user)
-            };
+                Roles = roles.Select(role => new RoleViewModel
+                {
+                    RoleId = role.Id,
+                    RoleName = role.Name,
+                    IsSelected = _userManger.IsInRoleAsync(user, role.Name).Result
+                }).ToList()
+        };
             
             return View(viewModel);
         }
@@ -126,13 +126,6 @@ namespace AlRayan.Controllers
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
-        private async Task<string> SavePhoto(IFormFile photo)
-        {
-            var photoName = $"{Guid.NewGuid()}{Path.GetExtension(photo.FileName)}";
-            var path = Path.Combine(_imagePath, photoName);
-            using var stream = System.IO.File.Create(path);
-            await photo.CopyToAsync(stream);
-            return photoName;
-        }
+
     }
 }
