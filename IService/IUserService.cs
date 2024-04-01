@@ -6,5 +6,6 @@ namespace AlRayan.IService
     {
         Task< IdentityResult> AddNewUser(AddUserViewModel model ,ApplicationUser user);
         List<UserViewModel> GetAllUsers();
+        void Save();
     }
 }

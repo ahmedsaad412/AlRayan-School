@@ -1,4 +1,4 @@
-﻿@model IEnumerable< UserViewModel>
+﻿@model IEnumerable<UserViewModel>
 @{
     ViewData["Title"] = "Users";
 }
@@ -32,6 +32,9 @@
                 <td>@string.Join(" , ",@user.Roles.ToList())</td>
                 <td>
                     <a class="btn btn-primary " asp-controller="Users" asp-action="ManageRoles" asp-route-userId="@user.Id">Manage Roles</a>
+                    <a asp-controller="Users" asp-action="SoftDelete" asp-route-id="@user.Id" type="button" class="btn">
+                        <i class="material-icons text-danger">delete</i>
+                    </a>
                 </td>
 
             </tr>

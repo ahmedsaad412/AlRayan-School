@@ -47,6 +47,10 @@ namespace AlRayan.Service
                 Roles = _userManager.GetRolesAsync(user).Result,
             }).ToList();
         }
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
         private async Task<string> SavePhoto(IFormFile photo)
         {
             var photoName = $"{Guid.NewGuid()}{Path.GetExtension(photo.FileName)}";

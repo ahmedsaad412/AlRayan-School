@@ -1,4 +1,5 @@
 ﻿using AlRayan.Data;
+using AlRayan.Models.MainEntity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,15 +13,12 @@ namespace AlRayan.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManger;
         private readonly RoleManager<IdentityRole> _roleManger;
-        private readonly ApplicationDbContext _db;
         private readonly IUserService _userService;
-        public UsersController(UserManager<ApplicationUser> user, RoleManager<IdentityRole> role, ApplicationDbContext db,IUserService userService)
+        public UsersController(UserManager<ApplicationUser> user, RoleManager<IdentityRole> role,IUserService userService)
         {
             _userManger = user;
-            _roleManger = role;
-            _db = db;
-            _userService = userService;
-            
+            _roleManger = role; 
+            _userService = userService;           
         }
         public IActionResult Index()
         { 
@@ -41,7 +39,7 @@ namespace AlRayan.Controllers
            if(!ModelState.IsValid) 
                 return View(model);
              
-            if(await _userManger.FindByEmailAsync(model.Email) is not null )
+            if(_userManger.FindByEmailAsync(model.Email) is not null )
             {
                 ModelState.AddModelError("Email","Email is already exists");
                 return View(model);
@@ -71,9 +69,9 @@ namespace AlRayan.Controllers
         public async Task<IActionResult> ManageRoles(string userId)
         { 
             var user = await _userManger.FindByIdAsync(userId);
-            var roles =await _roleManger.Roles.ToListAsync();
             if (user == null)
                 return NotFound();
+            var roles =await _roleManger.Roles.ToListAsync();
             var viewModel = new UserRoleViewModel
             {
                 UserId = user.Id,
@@ -112,6 +110,18 @@ namespace AlRayan.Controllers
             }
             return RedirectToAction(nameof(Index));
 
+        }
+
+        public async Task<ActionResult> SoftDelete(string id)
+        {
+            var user =await _userManger.FindByIdAsync(id);
+            if (user is null)
+            {
+                return NotFound();
+            }
+            user.IsDeleted = true;
+            _userService.Save();
+            return RedirectToAction("Index");
         }
         public static ApplicationUser CreateUser()
         {
