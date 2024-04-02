@@ -1,16 +1,19 @@
-function AddCourse() {
+debugger;
+function AddCourse(e) {
+    e.preventDefault();
     var name = $(".name").val();
     var description = $(".description").val();
     var hours = $(".hours").val();
-    var centerId = $('select').find(':selected').val();
+    /*var centerId = $('select').find(':selected').val();*/
     let fd = new FormData();
     fd.append("Name", name)
     fd.append("Description", description)
-    fd.append("Hours", hours)
-    fd.append("CenterId", centerId)
+    fd.append("Hours", hours) 
+    
     console.log(fd);
     console.log(name)
     console.log(hours)
+    
 
     $.ajax({
         url: "/Admin/AddCourse",

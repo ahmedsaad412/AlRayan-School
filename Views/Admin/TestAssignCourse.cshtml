@@ -4,10 +4,15 @@
     ViewData["Title"] = "New Course";
 }
 
-
-<div class="row " >
+<style>
+    .row {
+    align-items: center;
+    flex-direction: column;
+}
+</style>
+<div class="row">
     <div class="col-6">
-        <button type="button" id="addNewForm" class="btn btn-primary mb-4 p-2 "><i class="bi bi-plus-circle-fill p-2"></i></button>
+        <button type="button" onclick="AddNewForm()" id="addNewForm" class="btn btn-primary mb-4 p-2 "><i class="bi bi-plus-circle-fill p-2"></i></button>
     </div>
     @*d-flex*@
  <div class="col-6 text-center container ">
@@ -18,75 +23,137 @@
                         <input type="text" class="form-control name mt-4" placeholder="Enter Course Name">
             </div>
             <div>
-                <input type="text" class="form-control description mt-4" placeholder="Enter Description">
+                        <input type="text" class="form-control description mt-4" placeholder="Enter Description">
             </div>
             <div>
                         <input type="text" class="form-control hours mt-4" placeholder="Enter Hours">
             </div>
-                    <div class="form-group mt-4">
+            <div class="form-group mt-4">
                 <select class="form-select " data-placeholder="Select Center" data-minimum-results-for-search="Infinity">
-                    <option selected>Open this select menu</option>
-                    <option value="1">AI</option>
-                    <option value="2">Deep Learning</option>
-                    <option value="2">Machine Learning</option>
+                    <option >Open this select menu</option>
+                    <option value="1">AI</option>  
+                    <option value="2">MACHINE</option>  
+                    <option value="3">DEEP</option>  
                 </select>     
           </div>
-                    <button type="button" class="mt-1 cancel btn btn-secondary">حذف</button>
+            <div>
+                    <button type="button" onclick="CancelForm(this)" class="mt-1 cancel btn btn-secondary cancelButton">حذف</button>
+            </div>
         </div>
     </div>
- </form>
+  </form>
  </div>
     <div class="col-12 text-center">
-        <input type="button" value="حفظ" onclick="AddCourse()" class="btn btn-primary col-6 text-black mt-4"/>
+        <input type="button" value="حفظ" onclick="extractFormData()" class="btn btn-primary submit col-6 text-black mt-4" />
     </div>
 </div>
 @section Scripts {
-
-    <script type="text/javascript" src="~/js/course/TestAssignCourse.js"></script>
+    
+   @* <script type="text/javascript" src="~/js/course/TestAssignCourse.js"></script>*@
+    @*<script type ="text/javascript" src="~/js/listofcourses/cloning.js"></script>*@
     <script>
-        $(document).ready(function () {
-
-            debugger;
-            
-            let counter = 1;
-            $("#addNewForm").click(function () {
-                if (counter > 10) {
-                    alert("Only 10 textboxes allowed");
-                    return false;
-                } 
-                else 
-                {
-                    $('select').select2('destroy');
-                    $('select')
-                        .removeAttr('data-live-search')
-                        .removeAttr('data-select2-id')
-                        .removeAttr('aria-hidden')
-                        .removeAttr('tabindex');
-                    var cc = $('select').last();
-                    console.log(cc);
-                   
+        var counter = 1;
+        function AddNewForm()
+        {
+            if (counter > 10) {
+                alert("Only 10 textboxes allowed");
+                return false;
+            }
+            else {
+                $('select').select2('destroy');
+                $('select')
+                    .removeAttr('data-live-search')
+                    .removeAttr('data-select2-id')
+                    .removeAttr('aria-hidden')
+                    .removeAttr('tabindex');
+                $('select').last();
                 $(".MyForm")
-                    .eq(0)                    
+                    .eq(0)
                     .clone()
                     .find("input").val("").end()
                     .show()
                     .insertAfter(".MyForm:last")
-                    counter++;
-                }
-                $('select').select2();
-            });
-            $('.container').on('click', ".cancel", function () {
-               
-                if (counter > 1) {
-                    $(this).closest('.MyForm').remove();
-                    counter--;
-                } else {
-                    
-                    alert("Cannot remove the first form.");
+                counter++;
+            }
+            console.log('counter is : '+counter)
+            $('select').select2();
+      
+        }
+  
+        function CancelForm(buttonClicked) 
+        {
+            if (counter > 1) {
+                $(buttonClicked).closest('.MyForm').remove();
+                counter--;
+                console.log('cancelForm1 if method counter is :' + counter)
+            } else {
+
+                alert("Cannot remove the first form.");
+            }
+            
+        }
+        function extractFormData() 
+        {
+            console.log('from extract method counter is :'+counter);
+            const formList = [];
+            // Loop through each cloned form
+            for (let i = 0; i < counter; i++) 
+            {
+                const formSelector = `.MyForm:eq(${i})`;
+                const form = $(formSelector);
+                // Extract data from form fields
+                const courseName = form.find(".name").val();
+                const courseDescription = form.find(".description").val();
+                const courseHours = form.find(".hours").val();
+                const CenterId = form.find("select option").val();
+               if (i >0)
+               {
+                    if (courseName === '') {
+                        alert(`Please enter course name`);
+                        return; // Stop the execution
+                    }
+                    if (courseDescription === '') {
+                        alert(`Please enter course description `);
+                        return; // Stop the execution
+                    }
+                    if (courseHours === '') {
+                        alert(`Please enter course hours `);
+                        return; // Stop the execution
+                    }
+                    // Create an object with the extracted data
+                    const formData = {
+                        name: courseName,
+                        description: courseDescription,
+                        hours: courseHours,
+                        centerId: CenterId,
+                    };
+                    // Append the object to the list
+                    formList.push(formData);
+                    console.log(`form list :  ${formList}`);
                 }
                 
-            });
-        });  
+            }
+            return formList;
+        }
+        
+     
     </script>
+    @*/ Serialize the array to JSON
+var jsonData = JSON.stringify(myArray);
+
+// Make the AJAX request
+$.ajax({
+    url: '/your-server-endpoint',
+    type: 'POST',
+    data: jsonData,
+    contentType: 'application/json', // Set the content type to JSON
+    success: function(response) {
+        // Handle the server response
+        console.log('Data sent successfully:', response);
+    },
+    error: function(error) {
+        console.error('Error sending data:', error);
+    }
+});*@
     <partial name="_ValidationScriptsPartial" />
 }
