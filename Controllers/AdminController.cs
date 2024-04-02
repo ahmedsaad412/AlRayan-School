@@ -78,14 +78,24 @@ namespace AlRayan.Controllers
             
         }
         [HttpPost ]
-        public async Task<IActionResult> AddCourse(AssignCourseFormViewModel model)
+        public async Task<IActionResult> AddCourse([FromBody]List<AssignCourseFormViewModel> model)
         {
             if (!ModelState.IsValid) return BadRequest("Enter required fields");
-            await _course.Create(model);
+            foreach (var item in model)
+            {    
+                 await _course.Create(item);
+            }
             return Ok($"Form Data received!");
+        }
+        //[HttpPost ]
+        //public async Task<IActionResult> AddCourse(AssignCourseFormViewModel model)
+        //{
+        //    if (!ModelState.IsValid) return BadRequest("Enter required fields");
+        //    await _course.Create(model);
+        //    return Ok($"Form Data received!");
 
            
-        }
+        //}
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
