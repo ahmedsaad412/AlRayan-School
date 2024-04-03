@@ -45,7 +45,7 @@ function CancelForm(buttonClicked) {
         console.log('cancelForm1 if method counter is :' + counter)
     } else {
 
-        alert("Cannot remove the first form.");
+        alert("Cannot remove this form. !!!");
     }
 }
 function extractFormData() {

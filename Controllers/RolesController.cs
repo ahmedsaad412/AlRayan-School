@@ -17,7 +17,7 @@ namespace AlRayan.Controllers
         public async Task<IActionResult> Index()
         
         {
-            var roles =await _roleManager.Roles.ToListAsync();
+            var roles =await _roleManager.Roles.ToListAsync();          
             return View(roles);
         }
         [HttpPost]

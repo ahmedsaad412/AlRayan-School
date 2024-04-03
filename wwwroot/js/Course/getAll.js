@@ -1,5 +1,6 @@
- $(document).ready(function () {
-            
+debugger;
+$(document).ready(function () {
+      
             $.ajax({
                 url: '/Course/GetCourses',
                 dataType: "json",
