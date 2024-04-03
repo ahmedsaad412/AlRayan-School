@@ -77,6 +77,23 @@ namespace AlRayan.Service
             //_context.SaveChanges(); 
             #endregion
         }
+        public async Task CreateList(List<AssignCourseFormViewModel> model)
+        {
+            List<Course> listOfCourses = new List<Course>();
+            foreach (var c in model)
+            {
+                Course course = new()
+                {
+                    Name = c.Name,
+                    Hours = c.Hours,
+                    Description = c.Description,
+                    CenterId = c.CenterId,
+                };
+                listOfCourses.Add(course);
+            }
+            _context.AddRange(listOfCourses);
+            _context.SaveChanges();
+        }
         public int RemoveTeatchersInCourse(IEnumerable<Teatcher> relatedTeatcher)
         {
             _context.Teatchers.RemoveRange(relatedTeatcher);
@@ -100,5 +117,6 @@ namespace AlRayan.Service
             _context.SaveChanges();
         }
 
+        
     }
 }

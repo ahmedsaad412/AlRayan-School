@@ -81,10 +81,7 @@ namespace AlRayan.Controllers
         public async Task<IActionResult> AddCourse([FromBody]List<AssignCourseFormViewModel> model)
         {
             if (!ModelState.IsValid) return BadRequest("Enter required fields");
-            foreach (var item in model)
-            {    
-                 await _course.Create(item);
-            }
+            await _course.CreateList(model);
             return Ok($"Form Data received!");
         }
         //[HttpPost ]

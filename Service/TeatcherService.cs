@@ -26,6 +26,14 @@ namespace AlRayan.Service
                 .AsNoTracking()
                 .ToList();
         }
+        public Teatcher? GetById(int id)
+        {
+            return _context.Teatchers
+           .Include(u => u.User)
+           .Include(c => c.Center)
+           .Include(c => c.Course)
+           .SingleOrDefault(t => t.Id == id);
+        }
         public IEnumerable<SelectListItem> GetSelectListDistinct()
         {
             //var query = from a in _context.Users.Where(a => a.Type == Models.Type.teatcher)
@@ -67,14 +75,6 @@ namespace AlRayan.Service
             _context.SaveChanges();
         }
 
-        public Teatcher? GetById(int id)
-        {
-            return _context.Teatchers
-           .Include(u => u.User)
-           .Include(c => c.Center)
-           .Include(c => c.Course)
-           .SingleOrDefault(t => t.Id == id);
-        }
         public async Task<Teatcher?> Update(EditTeatcherFormViewModel model)
         {
             var teatcher = _context.Teatchers.Find(model.Id);

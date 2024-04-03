@@ -11,6 +11,7 @@ namespace AlRayan.IService
         IEnumerable<Course> GetAllCourses();
         IEnumerable<Teatcher> GetAllTeatchersInCourse(int id);
         Task Create(AssignCourseFormViewModel model);
+        Task CreateList(List<AssignCourseFormViewModel> model);
         int RemoveTeatchersInCourse(IEnumerable<Teatcher> relatedTeatchers);
         Task<Course?> Update(EditCourseFormViewModel model);
 
