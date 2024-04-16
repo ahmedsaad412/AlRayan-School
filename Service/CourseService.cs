@@ -1,5 +1,6 @@
 ﻿using AlRayan.Data;
 using AlRayan.Models.MainEntity;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
@@ -10,11 +11,16 @@ namespace AlRayan.Service
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _user;
+        private readonly IWebHostEnvironment _webHost;
+        private readonly string _imagePath;
 
-        public CourseService(ApplicationDbContext context, UserManager<ApplicationUser> user)
+        public CourseService(ApplicationDbContext context, UserManager<ApplicationUser> user ,
+            IWebHostEnvironment webHost)
         {
             _context = context;
             _user = user;
+            _webHost = webHost;
+            _imagePath = $"{_webHost.WebRootPath}{FileSettings.FilePath}";
         }
 
         public Course? GetById(int id)
@@ -62,12 +68,14 @@ namespace AlRayan.Service
             //} 
             #endregion
 
+            var photoName = await SavePhoto(model.Photo);
 
             Course course = new()
             {
                 Name = model.Name,
                 Hours = model.Hours,
                 Description = model.Description,
+                Photo=photoName,
                 CenterId = model.CenterId,
             };
             _context.Add(course);
@@ -82,11 +90,13 @@ namespace AlRayan.Service
             List<Course> listOfCourses = new List<Course>();
             foreach (var c in model)
             {
+                var photoName = await SavePhoto(c.Photo);
                 Course course = new()
                 {
                     Name = c.Name,
                     Hours = c.Hours,
                     Description = c.Description,
+                    Photo = photoName,
                     CenterId = c.CenterId,
                 };
                 listOfCourses.Add(course);
@@ -117,6 +127,14 @@ namespace AlRayan.Service
             _context.SaveChanges();
         }
 
-        
+
+        private async Task<string> SavePhoto(IFormFile photo)
+        {
+            var photoName = $"{Guid.NewGuid()}{Path.GetExtension(photo.FileName)}";
+            var path = Path.Combine(_imagePath, photoName);
+            using var stream = System.IO.File.Create(path);
+            await photo.CopyToAsync(stream);
+            return photoName;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using AlRayan.Attributes;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace AlRayan.ViewModel.Course
 {
@@ -8,6 +9,10 @@ namespace AlRayan.ViewModel.Course
         public string Name { get; set; }
         public string Description { get; set; }
         public int Hours { get; set; }
+
+        [AllowedExtentionsAttribute(FileSettings.AllowedExtentions)]
+        [MaxFileSizeAttribute(FileSettings.MaxFileSizeInBytes)]
+        public IFormFile Photo { get; set; }
 
         public int CenterId { get; set; }
         public IEnumerable<SelectListItem> Centers { get; set; } = Enumerable.Empty<SelectListItem>();

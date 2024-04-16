@@ -7,6 +7,7 @@
         public string Description { get; set; }
         public int Hours { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public string Photo { get; set; } = string.Empty;
 
         public Course()
         {
