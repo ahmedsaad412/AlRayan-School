@@ -37,5 +37,29 @@ namespace AlRayan.Controllers
             await _roleManager.CreateAsync(new IdentityRole(model.Name.Trim()));
             return RedirectToAction(nameof(Index));
         }
+        
+        public async Task<IActionResult> Delete(string Id)
+        {
+            var user = await _roleManager.FindByIdAsync(Id); // Use 'id' here
+            if (user != null)
+            {
+                await _roleManager.DeleteAsync(user);
+            }
+
+            return RedirectToAction(nameof(Index));
+
+            //if (await _roleManager.RoleExistsAsync(Id) !=null)
+            //{
+            //    var role = await _roleManager.FindByIdAsync(Id);
+            //    await _roleManager.DeleteAsync(role);
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //else
+            //{
+
+            //    ModelState.AddModelError("RoleNotFound", "Role does not exist.");
+            //    return View("Index", await _roleManager.Roles.ToListAsync());
+            //}
         }
+    }  
 }

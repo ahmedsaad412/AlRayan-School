@@ -1,4 +1,4 @@
-debugger;
+
 $(document).ready(function () {
       
             $.ajax({
@@ -10,7 +10,7 @@ $(document).ready(function () {
                     courseTable.empty();
                     $(result.data).each(function (index, course) {
                         courseTable.append(
-                            `<tr><td> 
+                            `<tr><td>
                              </td><td>  ${course.name}  
                              </td><td>  ${course.description}  
                              </td><td>  ${course.hours} 

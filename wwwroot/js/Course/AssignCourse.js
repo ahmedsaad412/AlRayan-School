@@ -9,13 +9,13 @@ function AddCourse() {
     fd.append("Hours", hours)
     fd.append("CenterId", centerId)
     console.log(fd);
-    console.log(name)
-    console.log(hours)
+    console.log(name);
+    console.log(hours);
 
     $.ajax({
         url: "/Admin/AddCourse",
         type: "POST",
-        contentType: false,
+        contentType: 'application/json',
         processData: false,
         data: fd,
         success: function () {
@@ -23,9 +23,6 @@ function AddCourse() {
             console.log("sss")
 
         },
-        error: function () {
-            alert('Failed to receive the Data');
-            console.log('Failed ');
-        }
+
     });
 }
