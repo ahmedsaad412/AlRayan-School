@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\ListOfCourses\" />
+    <Folder Include="wwwroot\js\Test\" />
   </ItemGroup>
 
 </Project>

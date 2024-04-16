@@ -16,20 +16,25 @@
     </div>
     @*d-flex*@
  <div class="col-6 text-center container ">
-  <form class="border border-dark p-3 mb-2 bg-primary MyForm"  method="post">
+  <form class="border border-dark p-3 mb-2 bg-primary MyForm" enctype="multipart/form-data"  method="post">
     <div class=" row">
         <div class="col-md-6 ">
             <div>
-                        <input type="text" class="form-control name mt-4" placeholder="Enter Course Name">
+                        <input type="text" class="form-control name mt-4" name="Name" placeholder="Enter Course Name">
             </div>
             <div>
-                        <input type="text" class="form-control description mt-4" placeholder="Enter Description">
+                        <input type="text" class="form-control description mt-4" name="Description" placeholder="Enter Description">
             </div>
             <div>
-                        <input type="text" class="form-control hours mt-4" placeholder="Enter Hours">
+                        <input type="text" class="form-control hours mt-4" name="Hours" placeholder="Enter Hours">
             </div>
+            <div>
+                        <input type="file" class="form-control photo mt-4" name="Photo" placeholder="Enter photo">
+                        <small class="form-text text-dark text-muted">only .jpg ,.jepg .png files are allowed with max size 1MB</small><br />
+            </div>
+                   
             <div class="form-group mt-4">
-                <select class="form-select MyDropDown" data-placeholder="Select Center" data-minimum-results-for-search="Infinity">
+                <select class="form-select MyDropDown" name="CenterId" data-placeholder="Select Center" data-minimum-results-for-search="Infinity">
                      <option selected>Open this select menu</option>
                 </select>     
           </div>
@@ -45,7 +50,130 @@
     </div>
 </div>
 @section Scripts {
-    
-    <script src="~/js/listofcourses/addmulticourses.js"></script>
+   
+
+   @*  <script src="~/js/listofcourses/addmulticourseswithphoto.js"></script> *@
+   <script>
+
+
+        var counter = 1;
+        const centersData = [
+            { Id: 1, Name: "AI" },
+        ];
+        // Populate the dropdown
+        const dropdown = $(".MyDropDown");
+        centersData.forEach(center => {
+            dropdown.append($("<option />").val(center.Id).text(center.Name));
+        });
+        // Optional: Handle dropdown events (e.g., change event)
+        dropdown.on("change", function () {
+            const selectedCenterId = $(this).val();
+            console.log("Selected Center ID:", selectedCenterId);
+            // You can perform additional actions based on the selected value.
+        });
+        function AddNewForm() {
+            if (counter > 10) {
+                alert("Only 10 textboxes allowed");
+                return false;
+            }
+            else {
+                $('select').select2('destroy');
+                $('select')
+                    .removeAttr('data-live-search')
+                    .removeAttr('data-select2-id')
+                    .removeAttr('aria-hidden')
+                    .removeAttr('tabindex');
+                $('select').last();
+                $(".MyForm")
+                    .eq(0)
+                    .clone()
+                    .find("input").val("").end()
+                    .show()
+                    .insertAfter(".MyForm:last")
+                counter++;
+            }
+            console.log('counter is : ' + counter)
+            $('select').select2();
+
+        }
+        function CancelForm(buttonClicked) {
+            if (counter > 1) {
+                $(buttonClicked).closest('.MyForm').remove();
+                counter--;
+                console.log('cancelForm1 if method counter is :' + counter)
+            } else {
+
+                alert("Cannot remove this form. !!!");
+            }
+        }
+        function extractFormData() {
+            var ArrayOfObjects = [];
+            var formData = new FormData();
+            // Loop through each form
+            $('.MyForm').each(function (index, form) {
+                var objectData = {};
+                var $form = $(form);
+                // Collect data from the form
+                objectData.Name = $form.find('input[name="Name"]').val();
+                objectData.Description = $form.find('input[name="Description"]').val();
+                objectData.Hours = $form.find('input[name="Hours"]').val();
+                objectData.Photo = $form.find('input[name="Photo"]').prop('files')[0];
+                objectData.CenterId = $form.find('select[name="CenterId"]').val();
+
+                // Add the object to the array
+                ArrayOfObjects.push(objectData);
+            });
+            $.each(ArrayOfObjects, function (index, objectData) {   
+                console.log('Index:', index);
+                console.log('Name:',objectData.Name);
+                console.log('Description:', objectData.Description);
+                console.log('Hours:',objectData.Hours);
+                console.log('Photo:',objectData.Photo);
+                console.log('CenterId:', objectData.CenterId);
+            });
+            $.ajax({
+                url: '/Admin/AddCourse',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ data: ArrayOfObjects }), // Wrap the array in an object with key 'data'
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+            // $.ajax({
+            //     url: '/Admin/AddCourse',
+            //     type: 'POST',
+            //     contentType: 'application/json',
+            //     data: JSON.stringify(ArrayOfObjects),
+            //     success: function (response) {
+            //         console.log(response);
+            //     },
+            //     error: function (xhr, status, error) {
+            //         console.error(xhr.responseText);
+            //     }
+            // });
+            //formData = JSON.stringify(ArrayOfObjects);
+            // Send data via Ajax
+            // $.ajax({
+            //     url: '/Admin/AddCourse',
+            //     type: 'POST',
+            //     contentType:false,
+            //     processData :false,
+            //     data: formData,
+            //     success: function (response) {
+            //         console.log(response)
+            //     },
+            //     error: function (xhr, status, error) {
+            //         // Handle error
+            //     }
+            // });
+                
+            
+        }
+       
+    </script> 
     <partial name="_ValidationScriptsPartial" />
 }
