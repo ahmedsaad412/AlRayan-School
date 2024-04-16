@@ -21,6 +21,7 @@ namespace AlRayan.Controllers
         }
         public IActionResult Index()
         {
+            
             return View();
         }
         [HttpGet]
@@ -77,13 +78,22 @@ namespace AlRayan.Controllers
             return View(viewModel);
             
         }
-        [HttpPost ]
-        public async Task<IActionResult> AddCourse([FromBody]List<AssignCourseFormViewModel> model)
+        [HttpPost]
+        public async Task<IActionResult> AddCourse([FromBody] List<AssignCourseFormViewModel> data)
         {
             if (!ModelState.IsValid) return BadRequest("Enter required fields");
-            await _course.CreateList(model);
+           // await _course.CreateList(model);
             return Ok($"Form Data received!");
         }
+        #region send one form with photo
+        //[HttpPost]
+        //public async Task<IActionResult> AddCourse(AssignCourseFormViewModel model)
+        //{
+        //    if (!ModelState.IsValid) return BadRequest("Enter required fields");
+        //    await _course.Create(model);
+        //    return Ok($"Form Data received!");
+        //} 
+        #endregion
         //[HttpPost ]
         //public async Task<IActionResult> AddCourse(AssignCourseFormViewModel model)
         //{
@@ -91,7 +101,7 @@ namespace AlRayan.Controllers
         //    await _course.Create(model);
         //    return Ok($"Form Data received!");
 
-           
+
         //}
 
         //[HttpPost]

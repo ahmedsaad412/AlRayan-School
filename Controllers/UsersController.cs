@@ -39,7 +39,7 @@ namespace AlRayan.Controllers
            if(!ModelState.IsValid) 
                 return View(model);
              
-            if(_userManger.FindByEmailAsync(model.Email) is not null )
+            if(await _userManger.FindByEmailAsync(model.Email) is not null )
             {
                 ModelState.AddModelError("Email","Email is already exists");
                 return View(model);
@@ -119,7 +119,7 @@ namespace AlRayan.Controllers
             {
                 return NotFound();
             }
-            user.IsDeleted = true;
+             user.IsDeleted = true;
             _userService.Save();
             return RedirectToAction("Index");
         }
